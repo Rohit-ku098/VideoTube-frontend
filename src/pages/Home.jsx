@@ -1,12 +1,13 @@
-import React from 'react'
-import VideoCard from '../components/Video/VideoCard'
+import React, {useState} from 'react'
 import VideoContainer from '../components/Video/VideoContainer'
-import VideoPlayer from '../components/Video/VideoPlayer'
+import UploadVideoForm from '../components/Video/UploadVideo';
 
 function Home() {
+ 
   return (
     <>
-      <VideoContainer />
+      {/* <VideoContainer /> */}
+      <UploadVideoForm/>
     </>
   );
 }

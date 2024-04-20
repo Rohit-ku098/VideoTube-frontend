@@ -26,11 +26,12 @@ function Video() {
      const { videoId } = useParams();
      console.log(videoId)
      const [video, setVideo] = useState({});
-       const [date, setDate] = useState(null);
-       const [views, setViews] = useState(null);
-       const [descriptionOpen, setDescriptionOpen] = useState(false);
+      const [date, setDate] = useState(null);
+      const [views, setViews] = useState(null);
+      const [descriptionOpen, setDescriptionOpen] = useState(false);
       const [suggestedVideo, setSuggestedVideo] = useState([]);
       const [isSubscribed, setIsSubscribed] = useState(false)
+      const [totalSubscribers, setTotalSubscribers] = useState(0)
       const [liked, setLiked] = useState(false)
       const [totalLike, setTotalLike] = useState(0)
       const [loading, setLoading] = useState(true)
@@ -46,7 +47,14 @@ function Video() {
 
      const handleSubscribe = async () => {
         await toggleSubscribe(video?.owner?._id)
-        .then((data) => setIsSubscribed(data.isSubscribed))
+        .then((data) => {
+          setIsSubscribed(data.isSubscribed);
+          if(data.isSubscribed) {
+            setTotalSubscribers(totalSubscribers + 1)
+          } else {
+            setTotalSubscribers(totalSubscribers - 1)
+          }
+        })
         .catch(err => console.log(err))
       }
 
@@ -66,7 +74,7 @@ function Video() {
          setVideo(data);
          setDate(getAge(data.createdAt));
          setViews(formatViews(data.views));
-         
+         setTotalSubscribers(data?.owner?.subscribers)
          getSubscriptionStatus(data?.owner?._id).then((data) =>
            setIsSubscribed(data.isSubscribed)
          );
@@ -82,7 +90,7 @@ function Video() {
        })
 
 
-     }, []);
+     }, [videoId]);
      
      useEffect(() => {
       if(video && user){
@@ -116,7 +124,7 @@ function Video() {
                 {/*name subscribers */}
                 <p className="font-bold">{video?.owner?.fullName}</p>
                 <p className="text-sm text-gray-600">
-                  {video?.owner?.subscribers || 0}&nbsp;subscribers
+                  {totalSubscribers}&nbsp;subscribers
                 </p>
               </div>
               <div>
@@ -166,9 +174,10 @@ function Video() {
           </div>
           <div>
             <pre
+            
               className={`font-sans ${
                 !descriptionOpen && "line-clamp-2"
-              } text-wrap`}
+              } whitespace-pre-wrap`}
               onClick={handleOpenDescription}
             >
               {video?.description}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {ScaleLoader} from "react-spinners";
 
 const override = {
@@ -8,9 +8,15 @@ const override = {
 };
 
 function Loader() {
-  
+   useEffect(() => {
+     document.body.style.overflow = "hidden";
+     return () => {
+       document.body.style.overflow = "auto";
+     };
+   }, []);
+
   return (
-    <div className="w-full h-screen flex justify-center items-center fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] bg-[#dfdede79]">
+    <div className="z-50 w-screen h-screen flex justify-center items-center fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] backdrop-brightness-90">
       <ScaleLoader
         color={"#000"}
         size={150}

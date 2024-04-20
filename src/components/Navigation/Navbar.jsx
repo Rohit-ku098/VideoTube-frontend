@@ -82,7 +82,7 @@ const Navbar = () => {
             )}
           </button>
           <div className="flex items-center ">
-            <Logo height="45px" width="45px"/>
+            <Logo height="45px" width="45px" />
             <span
               className={`font-bold text-lg ${
                 isSeachOpen ? "hidden" : "block"
@@ -94,13 +94,13 @@ const Navbar = () => {
         </div>
 
         <div
-          className="flex justify-center items-center "
+          className={`flex justify-center items-center `}
           onMouseOver={() => setIsSearchOpen(true)}
           onMouseOut={() => setIsSearchOpen(false)}
         >
           <input
             type="text"
-            className={`w-52 md:block md:w-96 border border-gray-300 rounded-md rounded-e-none px-4 py-2 outline-none border-e-0 ${
+            className={`w-40 sm:w-48 md:block md:w-96 border border-gray-300 rounded-md rounded-e-none px-4 py-2 outline-none border-e-0 ${
               isSeachOpen ? "block" : "hidden"
             }`}
             placeholder="Search"
@@ -108,13 +108,13 @@ const Navbar = () => {
           <FontAwesomeIcon
             icon={faSearch}
             className={`p-2 text-2xl md:border md:rounded-md md:rounded-s-none ${
-              isSeachOpen ? "rounded-md rounded-s-none border" : ""
+              isSeachOpen ? "rounded-md rounded-s-none border" : "absolute right-[15%] md:static"
             }`}
           />
         </div>
         <div ref={dropdownRef}>
           <img
-            src={`${isLoggedIn ? user?.avatar : '/avatar.png'}`}
+            src={`${isLoggedIn ? user?.avatar : "/avatar.png"}`}
             alt="avatar"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="h-10 w-10 border-2  rounded-full cursor-pointer"

@@ -4,10 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faEllipsisVertical, faListUl, faEdit, faTrash, faFlag} from '@fortawesome/free-solid-svg-icons'
 import Dropdown from '../Dropdown'
 import { useSelector } from 'react-redux'
+import Confirmation from '../Confirmation'
+import { deleteComment } from '../../services/comment.service'
 
 const Comment = ({comment}) => {
   const [age, setAge] = useState(0)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+  const [isDeleted, setIsDeleted] = useState(false)
+  const [isFlagOpen, setIsFlagOpen] = useState(false)
   const dropdownRef = useRef(null)
   const {user} = useSelector(state => state.user)
 
@@ -27,8 +33,18 @@ const Comment = ({comment}) => {
     setAge(getAge(comment?.createdAt))
   }, [])
   
+  const handleConfirmationPopup = () => {
+    setIsDeleteOpen(!isDeleteOpen)
+  }
 
-  return (
+  const handleDeleteComment = () => {
+    deleteComment(comment?._id).then(() => {
+      setIsDeleteOpen(false)
+      setIsDeleted(true)
+    })
+  }
+
+  return !isDeleted && (
     <div className="w-full p-4 my-2 flex gap-3 group/comment">
       <div>
         {/*avatar*/}
@@ -62,20 +78,18 @@ const Comment = ({comment}) => {
         {/* 3 dots */}
         <FontAwesomeIcon icon={faEllipsisVertical} onClick={() => setIsDropdownOpen(!isDropdownOpen)} />
         {isDropdownOpen && (
-          <Dropdown
-            
+          <Dropdown   
             options={
               user?._id === comment?.owner?._id
                 ? [
                     {
                       title: "Edit",
-                      path: `/editComment/${comment?._id}`,
                       icon: faEdit,
                     },
                     {
                       title: "Delete",
-                      path: `/deleteComment/${comment?._id}`,
                       icon: faTrash,
+                      onClick: handleConfirmationPopup
                     },
                   ]
                 : [
@@ -87,7 +101,18 @@ const Comment = ({comment}) => {
                   ]
             }
           />
+
         )}
+        {
+          isDeleteOpen && 
+          (<Confirmation 
+            title='Delete Comment'
+            onCancel={handleConfirmationPopup}
+            onConfirm={handleDeleteComment}
+          >
+            <p>Are you sure to delete? </p>
+          </Confirmation>)
+        }
       </div>
     </div>
   );

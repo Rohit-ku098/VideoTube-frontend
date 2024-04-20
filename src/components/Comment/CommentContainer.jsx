@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getVideoComments } from "../../services/comment.service";
+import { getVideoComments, addComment } from "../../services/comment.service";
 import { useForm } from "react-hook-form";
 import Comment from "./Comment";
 import Input from '../Input'
@@ -24,8 +24,8 @@ const CommentContainer = ({ videoId }) => {
   console.log(comments);
   
   const onSubmit = (data) => {
-    api.post(`/comments/${videoId}`, data).then((res) => {
-      setComments([...comments, res.data.data]);
+    addComment(videoId, data).then((res) => {
+      setComments([res, ...comments]);
       setValue("content", "");
     });
   }
@@ -70,7 +70,7 @@ const CommentContainer = ({ videoId }) => {
       </div>
       <div>
         {comments?.map((comment) => (
-          <Comment comment={comment} key={comment._id}/>
+          <Comment comment={comment} key={comment?._id}/>
         ))}
       </div>
     </div>

@@ -19,6 +19,7 @@ function Logout() {
             dispatch(logout());
         })
     },[])
+
   return (
     <div>
         {loading && <Loader/>}

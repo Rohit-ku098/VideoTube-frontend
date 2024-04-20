@@ -8,6 +8,7 @@ const Dropdown = React.forwardRef(function Dropdown(
         title: "",
         path: "#",
         icon: "",
+        onClick: () => {}
       },
     ],
   },
@@ -23,6 +24,7 @@ const Dropdown = React.forwardRef(function Dropdown(
               ref={ref}
               title={item.title}
               className="flex items-center px-6 py-2 gap-2 hover:bg-slate-50"
+              onClick={item.onClick}
             >
               <FontAwesomeIcon icon={item.icon} />
               {item.title}
