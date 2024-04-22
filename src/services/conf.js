@@ -8,7 +8,7 @@ export const api = axios.create({
     Accept: "application/json",
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
-    "ngrok-skip-browser-warning": "69420",
+    // "ngrok-skip-browser-warning": "69420",
   },
 });
 
