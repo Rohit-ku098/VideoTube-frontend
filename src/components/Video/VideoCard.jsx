@@ -45,13 +45,13 @@ function VideoCard({video, wraped = false}) {
           <div
             className={` ${
               wraped ? "w-52" : "max-h-56 w-full"
-            }  aspect-video relative`}
+            }  aspect-video relative flex justify-center items-center bg-black rounded-md`}
           >
             {/* Thumbnail */}
             <img
               src={video?.thumbnail || "/default-thumbnail.png"}
               alt=""
-              className="w-full h-full rounded-md"
+              className="max-w-full  max-h-full rounded-md"
             />
             <p className="m-2 p-0.5 text-xs bg-black text-white absolute bottom-0 right-0">
               {duration}
@@ -61,7 +61,7 @@ function VideoCard({video, wraped = false}) {
         </Link>
 
         <div className="w-full flex justify-between mt-2 ">
-          <div>
+          <div className="w-8 h-8 rounded-full">
             {!wraped && (
               <Link to={`/c/${video?.owner?._id}`}>
                 {/* channel avatar */}
@@ -73,7 +73,9 @@ function VideoCard({video, wraped = false}) {
               </Link>
             )}
           </div>
-          <div className="pl-3 w-full flex flex-col ">
+          <div
+            className={`pl-3 ${wraped ? "w-full" : "w-[90%] "} flex flex-col `}
+          >
             <p className="w-full text-md font-bold line-clamp-2">
               {video?.title || "This is title"} {/*title*/}
             </p>
@@ -90,7 +92,9 @@ function VideoCard({video, wraped = false}) {
             {/* 3dot */}
             <FontAwesomeIcon
               icon={faEllipsisVertical}
-              className={`m-2 cursor-pointer ${isDropdownOpen ? 'visible': 'invisible'} group-hover/video:visible`}
+              className={`m-2 cursor-pointer ${
+                isDropdownOpen ? "visible" : "invisible"
+              } group-hover/video:visible`}
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             />
             {isDropdownOpen && (

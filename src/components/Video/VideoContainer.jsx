@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import VideoCard from './VideoCard'
 import { getAllVideos } from '../../services/video.service'
-const VideoContainer = () => {
-    const [videos, setVideos] = useState([])
-    useEffect(() => {
-        getAllVideos().then((data) => {
-            setVideos(data)
-        })
-    }, [])
+import { useSelector, useDispatch } from 'react-redux'
+import { setVideos } from '../../store/videoSlice'
+const VideoContainer = ({videos}) => {
+    
+    
+
   return (
-      <div className="grid place-content-center auto-cols-1 sm:grid-cols-2 md:grid-cols-3  xl:grid-cols-4 2xl:grid-cols-5 content-stretch">
+      <div className="grid place-content-center auto-cols-1 sm:grid-cols-2 md:grid-cols-3  xl:grid-cols-4  2xl:grid-cols-5  content-stretch">
         {videos?.map((video) => (
           <VideoCard key={video?._id} video={video} />
         ))}

@@ -13,7 +13,7 @@ function Layout() {
       </header>
       <main
         className={`mt-[4.7rem] lg:ml-16 ${
-          isMenuOpen ? "md:ml-48" : ""
+          isMenuOpen ? "" : ""
         }  `}
       >
         <Aside />

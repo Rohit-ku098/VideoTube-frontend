@@ -1,17 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    isMenuOpen: false,
-}
+  isMenuOpen: false,
+  isSearchOpen: false,
+};
 const navbarSlice = createSlice({
-    name: "navbar",
-    initialState,
-    reducers: {
-        toggleMenu: (state) => {
-            state.isMenuOpen = !state.isMenuOpen;
-        },
+  name: "navbar",
+  initialState,
+  reducers: {
+    toggleMenu: (state, action) => {
+      state.isMenuOpen = action.payload;
     },
+    setIsSearchOpen: (state, action) => {
+      state.isSearchOpen = action.payload;
+    },
+  },
 });
 
-export const { toggleMenu } = navbarSlice.actions;
+export const { toggleMenu, setIsSearchOpen } = navbarSlice.actions;
 export default navbarSlice.reducer

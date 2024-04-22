@@ -66,11 +66,7 @@ function Login() {
           </p>
           <form className="mt-8" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-5">
-              {error && (
-                <div className="text-red-500">
-                  {error}
-                </div>
-              )}
+              {error && <div className="text-red-500">{error}</div>}
               <Input
                 label={"Full name"}
                 type="text"
@@ -95,6 +91,9 @@ function Login() {
                     value: true,
                     message: "Username is required",
                   },
+                  validate:{
+                    matchPattern: (value) => /^[a-zA-Z0-9_-]{3,16}$/g.test(value) || "Username can only contain Alphanumeric characters, _ and - and must be between 3 and 16 characters long"
+                  }
                 })}
               />
               {errors.userName && (
@@ -109,6 +108,12 @@ function Login() {
                   required: {
                     value: true,
                     message: "Email is required",
+                  },
+                  validate: {
+                    matchPattern: (value) =>
+                      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g.test(
+                        value
+                      ) || "Email address must be a valid address",
                   },
                 })}
               />
@@ -161,7 +166,7 @@ function Login() {
               </div>
             </div>
           </form>
-          {isSubmitting && <Loader/>}
+          {isSubmitting && <Loader />}
           <div className="mt-3 space-y-3"></div>
         </div>
       </div>

@@ -24,7 +24,6 @@ function App() {
   const getCurrentUser = async () => {
     try {
       const res = await api.get("/users/current-user");
-      console.log(res.data.data);
       if(res.status === 200) {
         dispatch(login(res.data?.data))
         // localStorage.setItem("user", JSON.stringify(res.data?.data))

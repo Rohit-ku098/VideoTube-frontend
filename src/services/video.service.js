@@ -17,4 +17,16 @@ const getVideoById = async (videoId) => {
     }
 };
 
-export { getAllVideos, getVideoById }
+const uploadVideo = async (data) => {
+    try {
+        const response = await api.post("/videos", data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+        return response.data?.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export { getAllVideos, getVideoById, uploadVideo }

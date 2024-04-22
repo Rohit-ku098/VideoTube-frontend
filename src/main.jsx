@@ -15,6 +15,8 @@ import Logout from "./pages/Logout.jsx";
 import Layout from "./components/Layout.jsx";
 import Video from "./pages/Video.jsx";
 import VideoContainer from "./components/Video/VideoContainer.jsx";
+import UploadVideo from "./components/Video/UploadVideo.jsx";
+import SearchPage from "./pages/SearchPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +44,22 @@ const router = createBrowserRouter([
               // </AuthLayout>
             ),
           },
+          {
+            path: "/upload",
+            element: (
+              <AuthLayout authentication={true}>
+                <UploadVideo/>
+              </AuthLayout>
+            )
+          },
+          {
+            path: "/search",
+            element: (
+              <AuthLayout authentication={true}>
+                <SearchPage/>
+              </AuthLayout>
+            )
+          }
         ],
       },
       {

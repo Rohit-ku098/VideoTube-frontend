@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCog,
@@ -8,24 +7,36 @@ import {
   faTimes,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import NavItem from "./NavItem";
 
 import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../../store/navbarSlice";
 import Dropdown from "../Dropdown";
 import Logo from "../Logo";
+import Searchbar from "./Searchbar";
 
 const Navbar = () => {
   const { isLoggedIn, user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const { isMenuOpen } = useSelector((state) => state.navbar);
-  const [isSeachOpen, setIsSearchOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null)
+  const { isMenuOpen, isSearchOpen } = useSelector((state) => state.navbar);
   
-  const handleToggleMenu = () => {
-    dispatch(toggleMenu());
-  };
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  
+  const dropdownRef = useRef(null)
+  const menuButtonRef = useRef(null)
+  
+  
+  useEffect(() => {
+    const handleCloseMenu = (e) => {
+      if (menuButtonRef.current.contains(e.target)) {
+        dispatch(toggleMenu(!isMenuOpen));
+      }
+    };
+    document.addEventListener("mousedown", handleCloseMenu);
+    return () => {
+      document.removeEventListener("mousedown", handleCloseMenu);
+    };
+}, [isMenuOpen])
+
 
   useEffect(() => {
    const handleCloseDropdown = (e) => {
@@ -70,22 +81,29 @@ const Navbar = () => {
       icon: faUser,
     },
   ];
+
+
+
   return (
     <>
       <nav className="flex justify-between items-center group p-4 z-50 md:px-10 border-2 fixed top-0 w-full bg-white">
         <div className="flex items-center gap-3">
-          <button type="button" onClick={handleToggleMenu} className="text-2xl">
+          <div type="button" className="text-2xl" ref={menuButtonRef}>
             {isMenuOpen ? (
-              <FontAwesomeIcon icon={faTimes} />
+              <button type="button">
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
             ) : (
-              <FontAwesomeIcon icon={faBars} />
+              <button type="button">
+                <FontAwesomeIcon icon={faBars} />
+              </button>
             )}
-          </button>
+          </div>
           <div className="flex items-center ">
             <Logo height="45px" width="45px" />
             <span
               className={`font-bold text-lg ${
-                isSeachOpen ? "hidden" : "block"
+                isSearchOpen ? "hidden" : "block"
               } md:block`}
             >
               VideoTube
@@ -93,25 +111,8 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div
-          className={`flex justify-center items-center `}
-          onMouseOver={() => setIsSearchOpen(true)}
-          onMouseOut={() => setIsSearchOpen(false)}
-        >
-          <input
-            type="text"
-            className={`w-40 sm:w-48 md:block md:w-96 border border-gray-300 rounded-md rounded-e-none px-4 py-2 outline-none border-e-0 ${
-              isSeachOpen ? "block" : "hidden"
-            }`}
-            placeholder="Search"
-          />
-          <FontAwesomeIcon
-            icon={faSearch}
-            className={`p-2 text-2xl md:border md:rounded-md md:rounded-s-none ${
-              isSeachOpen ? "rounded-md rounded-s-none border" : "absolute right-[15%] md:static"
-            }`}
-          />
-        </div>
+        <Searchbar />
+
         <div ref={dropdownRef}>
           <img
             src={`${isLoggedIn ? user?.avatar : "/avatar.png"}`}

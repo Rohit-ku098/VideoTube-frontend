@@ -7,7 +7,7 @@ function AuthLayout({authentication=true, children}) {
     const [loader, setLoader] = useState(true)
     const navigate = useNavigate()
     const {isLoggedIn, user} = useSelector((state) => state.user)
-    console.log(isLoggedIn, user)
+  
     useEffect(() => {
         if(authentication && isLoggedIn !== authentication) {
             navigate('/login')
