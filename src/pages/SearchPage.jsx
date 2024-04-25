@@ -4,14 +4,25 @@ import { getAllVideos } from "../services/video.service";
 import { useDispatch, useSelector } from 'react-redux';
 import VideoContainer from '../components/Video/VideoContainer';
 import Loader from '../components/Loader';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSliders } from '@fortawesome/free-solid-svg-icons';
+import Confirmation from '../components/Confirmation';
 
 function SearchPage() {
     const dispatch = useDispatch()
     const [searchParams, setSearchParams] = useSearchParams();
     const [searchVideos, setSearchVideos] = useState([])
     const [loading, setLoading] = useState(true)
+    const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = useState(false);
 
-    
+    const handleConfirmationPopup = () => {
+      setIsConfirmationPopupOpen(!isConfirmationPopupOpen);
+    };
+
+    const handleFilter = () => {
+
+    }
+
     useEffect(() => {
       setLoading(true)
       const params = {};
@@ -23,14 +34,72 @@ function SearchPage() {
       });
     }, [searchParams.get("query")]);
 
-  
-  return  (
+  console.log('search page render')
+  return (
     <div>
-      {loading && <Loader/> }
-      <h1>Search Page</h1>
-      <VideoContainer videos={searchVideos}/>
+      {loading && <Loader />}
+      <div className=" flex justify-between items-center gap-2 border p-4 ">
+        <ul className="flex items-center gap-2 [&>*]:bg-black [&>*]:text-white text-sm [&>*]:py-1 [&>*]:px-2 [&>*]:rounded-lg [&>*]:cursor-pointer">
+          <li>All</li>
+          <li>Watched</li>
+          <li>Unwatched</li>
+          <li>Subscriptions</li>
+        </ul>
+        <div
+          className="w-fit flex  items-center gap-2 cursor-pointer"
+          onClick={() => handleConfirmationPopup()}
+        >
+          <FontAwesomeIcon icon={faSliders} className="text-xl" />
+          <span className="text-lg">Filter</span>
+        </div>
+      </div>
+      <VideoContainer videos={searchVideos} />
+      {isConfirmationPopupOpen && (
+        <Confirmation
+          title="Search filters"
+          cancelBtn="Cancel"
+          confirmBtn="Apply"
+          onCancel={handleConfirmationPopup}
+          onConfirm={handleFilter}
+        >
+          <div className="mx-4 my-4 flex items-start justify-between gap-6">
+      <div>
+        <h3 className="mb-2 font-bold border-b-2 border-gray-300 text-center">
+          Sort By
+        </h3>
+        <ul className="flex flex-col  gap-2 text-sm">
+          <li>View Count</li>
+          <li>Upload Date</li>
+        </ul>
+      </div>
+      <div>
+        <h3 className="mb-2 font-bold border-b-2 border-gray-300 text-center">
+          Upload Date
+        </h3>
+        <ul className="flex flex-col gap-2 text-sm">
+          <li>Today</li>
+          <li>This Week</li>
+          <li>This Month</li>
+          <li>This Year</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 className="mb-2 font-bold border-b-2 border-gray-300 text-center">
+          Duration
+        </h3>
+        <ul className="flex flex-col gap-2 text-sm">
+          <li>Under 4 minutes</li>
+          <li>4-20 minutes</li>
+          <li>Over 20 minutes</li>
+        </ul>
+      </div>
     </div>
-  )
+        </Confirmation>
+      )}
+    </div>
+  );
 }
+
 
 export default React.memo(SearchPage)

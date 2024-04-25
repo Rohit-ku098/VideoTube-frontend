@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCog,
-  faSearch,
   faBars,
   faTimes,
   faUser,
@@ -10,20 +9,42 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../../store/navbarSlice";
+import { logout } from "../../store/userSlice";
+import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../../services/user.service";
+
 import Dropdown from "../Dropdown";
 import Logo from "../Logo";
 import Searchbar from "./Searchbar";
+import Confirmation from "../Confirmation";
+import Loader from "../Loader";
 
 const Navbar = () => {
-  const { isLoggedIn, user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const { isLoggedIn, user } = useSelector((state) => state.user);
   const { isMenuOpen, isSearchOpen } = useSelector((state) => state.navbar);
-  
+  const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  
+  const [loading, setLoading] = useState(false);
+
   const dropdownRef = useRef(null)
   const menuButtonRef = useRef(null)
-  
+
+    const handleConfirmationPopup = () => {
+      setIsConfirmationPopupOpen(!isConfirmationPopupOpen);
+    };
+
+    const handleLogout = () => {
+      setLoading(true);
+      logoutUser().then(() => {
+        setLoading(false);
+        navigate("/login");
+        dispatch(logout());
+        setLoading(false)
+      });
+    }
+
   
   useEffect(() => {
     const handleCloseMenu = (e) => {
@@ -64,9 +85,10 @@ const Navbar = () => {
     },
     {
       title: "Log Out",
-      path: "/logout",
+      
       icon: faUser,
-    }
+      onClick: handleConfirmationPopup,
+    },
   ];
 
   const loggedOutDropdownOptions = [
@@ -82,7 +104,7 @@ const Navbar = () => {
     },
   ];
 
-
+  console.log('navbar render')
 
   return (
     <>
@@ -129,6 +151,13 @@ const Navbar = () => {
           )}
         </div>
       </nav>
+
+      {isConfirmationPopupOpen && 
+        <Confirmation onCancel={handleConfirmationPopup} onConfirm={handleLogout} confirmBtn="Log Out">
+          <p>Are you sure to log out?</p>
+        </Confirmation>}
+
+      {loading && <Loader />}
     </>
   );
 };

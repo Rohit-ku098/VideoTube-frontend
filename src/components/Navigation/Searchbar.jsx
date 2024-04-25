@@ -32,9 +32,9 @@ const Searchbar = () => {
   return (
     <form
       onSubmit={handleSubmit(isDirty ? onSearch : () => {})}
-      onMouseOut={() => !isDirty && dispatch(setIsSearchOpen(false))}
-      onMouseOver={() => dispatch(setIsSearchOpen(true))}
-      className={`flex justify-center items-center  border-2 rounded-md md:divide-x-2 ${
+      onMouseLeave={() => !isDirty && dispatch(setIsSearchOpen(false))}
+      onMouseEnter={() => dispatch(setIsSearchOpen(true))}
+      className={` flex justify-center items-center  border-2 rounded-md md:divide-x-2 ${
         isSearchOpen ? "divide-x-2" : ""
       }
        `}
@@ -47,7 +47,7 @@ const Searchbar = () => {
         placeholder="Search"
       />
 
-      {window.screen.width < 768 ? (
+      {window.innerWidth < 768 ? (
         <div
           className={` p-1.5  ${
             isSearchOpen

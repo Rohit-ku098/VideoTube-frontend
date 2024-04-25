@@ -7,7 +7,7 @@ import { api } from "../../services/conf";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-const CommentContainer = ({ videoId }) => {
+const CommentContainer = ({ video }) => {
   const [comments, setComments] = useState([]);
     const { register, handleSubmit, setValue, getValues, formState:{isDirty} } = useForm({
     defaultValues: {
@@ -17,14 +17,14 @@ const CommentContainer = ({ videoId }) => {
     const {isLoggedIn} = useSelector(state => state.user)
 
   useEffect(() => {
-    getVideoComments(videoId).then((comments) => {
+    getVideoComments(video?._id).then((comments) => {
       setComments(comments);
     });
-  }, [videoId]);
+  }, [video?._id]);
   console.log(comments);
   
   const onSubmit = (data) => {
-    addComment(videoId, data).then((res) => {
+    addComment(video._id, data).then((res) => {
       setComments([res, ...comments]);
       setValue("content", "");
     });
@@ -70,7 +70,7 @@ const CommentContainer = ({ videoId }) => {
       </div>
       <div>
         {comments?.map((comment) => (
-          <Comment comment={comment} key={comment?._id}/>
+          <Comment comment={comment} key={comment?._id} video={video}/>
         ))}
       </div>
     </div>

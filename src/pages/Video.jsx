@@ -76,7 +76,7 @@ function Video() {
          setViews(formatViews(data.views));
          setTotalSubscribers(data?.owner?.subscribers)
          getSubscriptionStatus(data?.owner?._id).then((data) =>
-           setIsSubscribed(data.isSubscribed)
+           setIsSubscribed(data?.isSubscribed)
          );
        });
 
@@ -99,7 +99,9 @@ function Video() {
      }, [video, user])
     
     //  console.log(video)
-  return loading ? <Loader/> : (
+  return loading ? (
+    <Loader />
+  ) : (
     <div className="flex flex-col lg:flex-row lg:p-2">
       {/*Left video title description likes channel comments */}
       <div className="lg:max-w-[65vw] w-full">
@@ -132,7 +134,11 @@ function Video() {
                 {video?.owner?._id !== user?._id && (
                   <button
                     onClick={handleSubscribe}
-                    className="flex items-center justify-center bg-black text-white text-sm px-4 py-2 rounded-2xl"
+                    className={`flex items-center justify-center ${
+                      isSubscribed
+                        ? "bg-gray-300 text-black"
+                        : "bg-black text-white"
+                    }  text-sm px-4 py-2 rounded-2xl`}
                   >
                     {isSubscribed ? "Subscribed" : "Subscribe"}
                   </button>
@@ -174,7 +180,6 @@ function Video() {
           </div>
           <div>
             <pre
-            
               className={`font-sans ${
                 !descriptionOpen && "line-clamp-2"
               } whitespace-pre-wrap`}
@@ -194,7 +199,7 @@ function Video() {
         </div>
         <div>
           {/*comments*/}
-          <CommentContainer videoId={videoId} />
+          <CommentContainer video={video} />
         </div>
       </div>
 

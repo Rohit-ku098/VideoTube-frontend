@@ -18,6 +18,15 @@ const addComment = async (videoId, data) => {
     }
 }
 
+const updateComment = async (commentId, data) => {
+    try {
+        const res = await api.patch(`/comments/c/${commentId}`, data);
+        return res.data?.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 const deleteComment = async (commentId) => {
     try {
         const res = await api.delete(`/comments/c/${commentId}`);
@@ -27,4 +36,4 @@ const deleteComment = async (commentId) => {
     }
 };
 
-export {getVideoComments, addComment, deleteComment}
+export {getVideoComments, addComment, deleteComment, updateComment}

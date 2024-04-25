@@ -37,10 +37,10 @@ const Confirmation = ({children, title='Title', cancelBtn='Cancel', confirmBtn='
         <div>{children}</div>
         <div className="absolute bottom-0 right-0 mr-4 mb-4">
           <div className="flex gap-4 mt-4">
-            <button onClick={onCancel} className="">
+            <button onClick={onCancel} className="font-bold">
               {cancelBtn}
             </button>
-            <button onClick={onConfirm} className="">
+            <button onClick={onConfirm} className="font-bold">
               {confirmBtn}
             </button>
           </div>

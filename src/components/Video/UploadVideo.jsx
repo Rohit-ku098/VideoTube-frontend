@@ -5,17 +5,28 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { uploadVideo } from "../../services/video.service";
 import Loader from "../Loader";
+import { useToast } from "../../context/toastContext";
+import { useNavigate } from "react-router-dom";
 
 const UploadVideo = () => {
-  const { register, handleSubmit, setError, clearErrors, formState: {errors, isSubmitting, isDirty} } = useForm();
+  const { register, handleSubmit, setError, clearErrors, formState: {errors, isSubmitting, isDirty} } = useForm({defaultValues: {
+    videoFile: null,
+    thumbnail: null,
+    title: '',
+    description: '',
+    isPublished: false
+  }});
   const [videoFile, setVideoFile] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [loading, setLoading] = useState(false)
+  const toast = useToast();
+  const navigate = useNavigate();
 
   const handleVideoDrop = (event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     setVideoFile(file);
+    clearErrors("videoError");
   };
 
   const handleThumbnailDrop = (event) => {
@@ -57,6 +68,8 @@ const UploadVideo = () => {
     uploadVideo(formData).then((res) => {
       setLoading(false)
       console.log(res)
+      toast.open('Video uploaded successfully', 6000)
+      navigate('/')
     })
   };
 
@@ -245,7 +258,7 @@ const UploadVideo = () => {
                   type="submit"
                   className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-black  focus:outline-none focus:ring-2 focus:ring-offset-2 "
                 >
-                  Upload Video
+                    {isSubmitting ? "Uploading...": "Upload Video"}
                 </button>
               </div>
             </div>

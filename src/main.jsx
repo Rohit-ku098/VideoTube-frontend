@@ -11,12 +11,12 @@ import AuthLayout from "./components/AuthLayout.jsx";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
-import Logout from "./pages/Logout.jsx";
 import Layout from "./components/Layout.jsx";
 import Video from "./pages/Video.jsx";
 import VideoContainer from "./components/Video/VideoContainer.jsx";
 import UploadVideo from "./components/Video/UploadVideo.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
+import ToastProvider from "./context/ToastProvider.jsx";
 
 const router = createBrowserRouter([
   {
@@ -78,23 +78,17 @@ const router = createBrowserRouter([
           </AuthLayout>
         ),
       },
-      {
-        path: "/logout",
-        element: (
-          <AuthLayout authentication={true}>
-            <Logout />
-          </AuthLayout>
-        ),
-      },
     ],
   },
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router}>
-        <App />
-      </RouterProvider>
+      <ToastProvider>
+        <RouterProvider router={router}>
+          <App />
+        </RouterProvider>
+      </ToastProvider>
     </Provider>
   </React.StrictMode>
 );
