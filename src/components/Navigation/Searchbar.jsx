@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useLayoutEffect } from "react";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +9,7 @@ import { setIsSearchOpen } from "../../store/navbarSlice";
 const Searchbar = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate();
+  const [width, setWidth] = useState(window.innerWidth);
   const {
     register,
     handleSubmit, 
@@ -29,12 +30,22 @@ const Searchbar = () => {
     }
   }
 
+  useLayoutEffect(() => {
+    function updateSize() {
+      setWidth(window.innerWidth);
+    }
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  
   return (
     <form
       onSubmit={handleSubmit(isDirty ? onSearch : () => {})}
       onMouseLeave={() => !isDirty && dispatch(setIsSearchOpen(false))}
       onMouseEnter={() => dispatch(setIsSearchOpen(true))}
-      className={` flex justify-center items-center  border-2 rounded-md md:divide-x-2 ${
+      className={` flex justify-center items-center  border-2 dark:border-gray-800 rounded-md md:divide-x-2  dark:divide-gray-800 ${
         isSearchOpen ? "divide-x-2" : ""
       }
        `}
@@ -42,12 +53,12 @@ const Searchbar = () => {
       <input
         type="text"
         {...register("query")}
-        className={`w-40 sm:w-48 md:block md:w-96 rounded-md rounded-e-none px-4 py-2 outline-none  
+        className={` dark:bg-backgroundDark w-40 sm:w-48 md:block md:w-96 rounded-md rounded-e-none px-4 py-2 outline-none  
             ${isSearchOpen ? "block" : "hidden"} ${isDirty ? "block" : ""}`}
         placeholder="Search"
       />
 
-      {window.innerWidth < 768 ? (
+      {width < 768 ? (
         <div
           className={` p-1.5  ${
             isSearchOpen

@@ -5,6 +5,7 @@ import {
   faBars,
   faTimes,
   faUser,
+  faPalette,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +19,7 @@ import Logo from "../Logo";
 import Searchbar from "./Searchbar";
 import Confirmation from "../Confirmation";
 import Loader from "../Loader";
+import Appearance from "../Appearance";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -27,6 +29,7 @@ const Navbar = () => {
   const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isAppearanceOpen, setIsAppearanceOpen] = useState(false);
 
   const dropdownRef = useRef(null)
   const menuButtonRef = useRef(null)
@@ -45,6 +48,9 @@ const Navbar = () => {
       });
     }
 
+  const handleAppearanceOpen = () => {
+    setIsAppearanceOpen(!isAppearanceOpen);
+  };
   
   useEffect(() => {
     const handleCloseMenu = (e) => {
@@ -56,7 +62,7 @@ const Navbar = () => {
     return () => {
       document.removeEventListener("mousedown", handleCloseMenu);
     };
-}, [isMenuOpen])
+  }) 
 
 
   useEffect(() => {
@@ -75,20 +81,20 @@ const Navbar = () => {
   const loggedInDropdownOptions = [
     {
       title: "Profile",
-      path: "/profile",
+      path: `/channel/${user?.userName}`,
       icon: faUser,
     },
     {
-      title: "Settings",
-      path: "/settings",
-      icon: faCog,
+      title: "Appearance",
+      onClick: handleAppearanceOpen,
+      icon: faPalette,
     },
     {
       title: "Log Out",
-      
       icon: faUser,
       onClick: handleConfirmationPopup,
     },
+
   ];
 
   const loggedOutDropdownOptions = [
@@ -102,13 +108,18 @@ const Navbar = () => {
       path: "/signup",
       icon: faUser,
     },
+    {
+      title: "Appearance",
+      onClick: handleAppearanceOpen,
+      icon: faPalette,
+    },
   ];
 
   console.log('navbar render')
 
   return (
     <>
-      <nav className="flex justify-between items-center group p-4 z-50 md:px-10 border-2 fixed top-0 w-full bg-white">
+      <nav className="flex justify-between items-center group p-4 z-40 md:px-10 border-b-2 dark:border-gray-800 shadow-sm fixed top-0 w-full bg-white dark:bg-bgDarkSecondary">
         <div className="flex items-center gap-3">
           <div type="button" className="text-2xl" ref={menuButtonRef}>
             {isMenuOpen ? (
@@ -157,6 +168,7 @@ const Navbar = () => {
           <p>Are you sure to log out?</p>
         </Confirmation>}
 
+      {isAppearanceOpen && <Appearance setAppearanceOpen={setIsAppearanceOpen}/>}
       {loading && <Loader />}
     </>
   );

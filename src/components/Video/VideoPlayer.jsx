@@ -5,7 +5,7 @@ function VideoPlayer({src}) {
    
   return (
     <div className="aspect-video ">
-      <video controls autoPlay={true}  src={src} className="w-full h-full lg:rounded-md"></video>
+      <video controls autoPlay={true}  src={src} className="w-full h-full lg:rounded-md bg-black"></video>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faTimes} from '@fortawesome/free-solid-svg-icons'
-const Confirmation = ({children, title='Title', cancelBtn='Cancel', confirmBtn='Confirm', onCancel, onConfirm }) => {
+const Confirmation = ({children, title='Title', cancelBtn, confirmBtn, onCancel, onConfirm }) => {
     const popupRef = useRef(null)
     
     const handleClosePopup = (e) => {
@@ -25,14 +25,14 @@ const Confirmation = ({children, title='Title', cancelBtn='Cancel', confirmBtn='
     }, []);
 
   return (
-    <div className="z-50 w-[100vw] h-screen flex justify-center items-center fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] backdrop-brightness-75 ">
-      <div 
-      className="min-w-[300px] min-h-[150px] md:max-w-[25rem] max-w-[22rem] p-4 bg-white rounded-lg relative"
-      ref={popupRef}
+    <div className="z-50 w-[100vw] h-screen flex justify-center items-center fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] backdrop-brightness-50  ">
+      <div
+        className="min-w-[300px] min-h-[150px] md:max-w-[25rem] max-w-[22rem] p-4 bg-white dark:bg-backgroundDark dark:border-gray-800 rounded-lg relative border-2"
+        ref={popupRef}
       >
         <h2 className="mb-2 text-lg font-semibold ">{title}</h2>
         <div className="absolute top-0 right-0 m-3 text-lg">
-          <FontAwesomeIcon icon={faTimes} onClick={onCancel}/>
+          <FontAwesomeIcon icon={faTimes} onClick={onCancel} />
         </div>
         <div>{children}</div>
         <div className="absolute bottom-0 right-0 mr-4 mb-4">

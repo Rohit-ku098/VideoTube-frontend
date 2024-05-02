@@ -6,7 +6,10 @@ import React,{ useRef } from "react";
 const NavItem = ({ to, icon, label, onClick, className }, ref) => {
   const {isMenuOpen} = useSelector(state => state.navbar)
   return (
-    <li className="list-none " ref={ref}>
+    <li
+      className={`list-none ${isMenuOpen ? 'hover:bg-slate-100 dark:hover:bg-slate-800': ''} px-6 py-3 my-1 cursor-pointer`}
+      ref={ref}
+    >
       <Link
         to={to}
         className={`flex items-center  ${className}`}

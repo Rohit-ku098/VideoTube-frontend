@@ -13,4 +13,13 @@ api.get('/healthcheck').then(res => console.log(res.data))
    }
  };
 
- export {logoutUser}
+ const getUserChannelProfile = async (userName) => {
+  try {
+    const res = await api.get(`/users/c/${userName}`)
+    return res.data?.data;
+  } catch (error) {
+    throw error
+  }
+ }
+
+ export {logoutUser, getUserChannelProfile}

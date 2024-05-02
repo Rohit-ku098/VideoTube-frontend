@@ -19,6 +19,8 @@ function Aside() {
   const asideRef = useRef(null);
   const dispatch = useDispatch();
   const [width, setWidth] = useState(window.innerWidth);
+  const {user} = useSelector(state => state.user)
+
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -35,12 +37,13 @@ function Aside() {
   useLayoutEffect(() => {
     function updateSize() {
       setWidth(window.innerWidth);
-      console.log(window.innerWidth)
     }
     window.addEventListener("resize", updateSize);
     updateSize();
     return () => window.removeEventListener("resize", updateSize);
   }, [])
+
+
   console.log('aside render')
   return (
     <>
@@ -50,7 +53,7 @@ function Aside() {
           {isMenuOpen && (
             <aside
               ref={asideRef}
-              className="z-50 h-screen p-6 border-e-2 flex flex-col gap-8 text-xl md:flex text-black bg-white fixed left-0 "
+              className="z-40 h-screen  border-e-2 dark:border-gray-800 flex flex-col text-xl md:flex  bg-white fixed dark:bg-bgDarkSecondary left-0 "
             >
               <NavItem to="/" icon={faHome} label="Home" />
               <NavItem to="/trending" icon={faFire} label="Trending" />
@@ -60,21 +63,28 @@ function Aside() {
                 label="Subscriptions"
               />
               <NavItem to="/history" icon={faHistory} label="History" />
-              <NavItem to="/library" icon={faVideo} label="Library" />
+              <NavItem
+                to={`/playlist/feed/${user?._id}`}
+                icon={faVideo}
+                label="Playlist"
+              />
               <NavItem to="/upload" icon={faUpload} label="Upload" />
-              <NavItem to="/settings" icon={faCog} label="Settings" />
+              <NavItem
+                icon={faCog}
+                label="Settings"
+              />
             </aside>
           )}
         </div>
       ) : (
-        <div className="  md:block fixed left-0 z-50">
+        <div className="z-40  md:block fixed left-0">
           {/* desktop */}
           {
             <aside
               ref={asideRef}
               className={`${
                 isMenuOpen ? "w-48" : "w-16"
-              } h-screen p-6 border-e-2 flex flex-col gap-8 text-xl md:flex text-black  bg-white `}
+              }  h-screen border-e-2 dark:border-0 flex flex-col  text-xl md:fle bg-white dark:bg-bgDarkSecondary `}
             >
               <NavItem to="/" icon={faHome} label="Home" />
               <NavItem to="/trending" icon={faFire} label="Trending" />
@@ -84,13 +94,15 @@ function Aside() {
                 label="Subscriptions"
               />
               <NavItem to="/history" icon={faHistory} label="History" />
-              <NavItem to="/library" icon={faVideo} label="Library" />
+              <NavItem
+                to={`/playlist/feed/${user?._id}`}
+                icon={faVideo}
+                label="Playlist"
+              />
               <NavItem to="/upload" icon={faUpload} label="Upload" />
               <NavItem
-                to="/settings"
                 icon={faCog}
                 label="Settings"
-                className={"absolute bottom-10"}
               />
             </aside>
           }

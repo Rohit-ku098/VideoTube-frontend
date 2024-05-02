@@ -31,7 +31,7 @@ const CommentContainer = ({ video }) => {
   }
 
   return (
-    <div className="m-2 border p-2 rounded-lg bg-white">
+    <div className="m-2 border dark:border-gray-800 p-2 rounded-lg bg-white dark:bg-bgDarkSecondary">
       <div className=" text-lg font-bold">
         <p>{comments?.length} comments</p>
       </div>
@@ -39,7 +39,7 @@ const CommentContainer = ({ video }) => {
         {/* Add comments */}
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input
-            className="w-full border-0 border-b-2 border-b-black p-2 focus:outline-none"
+            className="w-full border-0 border-b-2 border-b-black dark:border-white p-2 focus:outline-none"
             placeholder="Add a comment..."
             autoComplete="off"
             {...register("content", { required: true, max: 100 })}
@@ -50,8 +50,8 @@ const CommentContainer = ({ video }) => {
                 type="submit"
                 className={` ${
                   isDirty
-                    ? "cursor-pointer  bg-black "
-                    : "cursor-not-allowed bg-gray-300"
+                    ? "cursor-pointer  bg-black dark:bg-white dark:text-black "
+                    : "cursor-not-allowed bg-gray-300 dark:bg-gray-900 dark:text-gray-600"
                 } text-sm font-bold text-white px-3 py-2 rounded-2xl`}
               >
                 Post
@@ -60,7 +60,7 @@ const CommentContainer = ({ video }) => {
           ) : (
             <div className="flex justify-end mt-2">
               <Link to={'/login'}>
-                <p className="text-sm font-bold bg-black text-white cursor-pointer px-3 py-2 rounded-2xl">
+                <p className="text-sm font-bold bg-black text-white dark:bg-white dark:text-black cursor-pointer px-3 py-2 rounded-2xl">
                   Login to post comment
                 </p>
               </Link>

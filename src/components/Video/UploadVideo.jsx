@@ -75,9 +75,9 @@ const UploadVideo = () => {
 
   return (
     <div className="pt-6 p-4">
-      {loading && <Loader/>}
+      {loading && <Loader />}
 
-      <div className="  p-4   border-2 rounded-xl bg-white shadow-lg ">
+      <div className="  p-4   border-2 dark:border-gray-800 rounded-xl bg-white dark:bg-[#20232f93] shadow-lg ">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex justify-between gap-4 flex-wrap md:flex-nowrap">
             <div className="w-full">
@@ -100,7 +100,7 @@ const UploadVideo = () => {
               <div className="mb-4 w-full">
                 <label
                   htmlFor="description"
-                  className="w-full block mb-2 font-medium text-gray-600"
+                  className="w-full block mb-2 font-medium text-gray-600 dark:text-gray-400"
                 >
                   Description
                 </label>
@@ -108,7 +108,7 @@ const UploadVideo = () => {
                   id="description"
                   name="description"
                   // rows="3"
-                  className="form-textarea w-full p-2 border border-gray-300 min-h-52 md:h-80 lg:h-96 outline-none "
+                  className="form-textarea w-full p-2 border border-gray-300 bg-transparent rounded-lg min-h-52 md:h-80 lg:h-96 outline-none "
                   {...register("description")}
                 ></textarea>
               </div>
@@ -121,7 +121,7 @@ const UploadVideo = () => {
               <div className="mb-4">
                 <label
                   htmlFor="videoFile"
-                  className="block mb-2 text-sm font-medium text-gray-600"
+                  className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
                 >
                   Video
                 </label>
@@ -140,7 +140,7 @@ const UploadVideo = () => {
                       required: {
                         value: !videoFile,
                         message: "Video is required",
-                      }
+                      },
                     })}
                   />
 
@@ -149,7 +149,11 @@ const UploadVideo = () => {
                       htmlFor="videoFile"
                       className="flex flex-col items-center cursor-pointer p-4"
                     >
-                      <img src="./drag-and-drop.jpg" alt="" className="w-44" />
+                      <img
+                        src="./drag-and-drop.jpg"
+                        alt=""
+                        className="w-44 dark:invert-0"
+                      />
                       <p>
                         Drop video file here or{" "}
                         <span className="text-indigo-600">browse</span>
@@ -165,7 +169,7 @@ const UploadVideo = () => {
                       <FontAwesomeIcon
                         onClick={() => setVideoFile(null)}
                         icon={faTimes}
-                        className="absolute top-0 right-0 text-2xl  bg-white p-2 rounded-lg "
+                        className="absolute top-0 right-0 text-2xl  p-2 rounded-lg "
                       />
                     </div>
                   )}
@@ -180,8 +184,8 @@ const UploadVideo = () => {
 
               <div className="mb-4">
                 <label
-                  htmlFor="videoFile"
-                  className="block mb-2 text-sm font-medium text-gray-600"
+                  htmlFor="thumbnail"
+                  className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
                 >
                   Thumbnail
                 </label>
@@ -200,7 +204,7 @@ const UploadVideo = () => {
                       required: {
                         value: !thumbnail,
                         message: "Thumbnail is required",
-                      }
+                      },
                     })}
                   />
 
@@ -209,7 +213,11 @@ const UploadVideo = () => {
                       htmlFor="thumbnail"
                       className="flex flex-col items-center cursor-pointer p-4"
                     >
-                      <img src="./drag-and-drop.jpg" alt="" className="w-44" />
+                      <img
+                        src="./drag-and-drop.jpg"
+                        alt=""
+                        className="w-44 dark:invert-0"
+                      />
                       <p>
                         Drop thumbnail file here or{" "}
                         <span className="text-indigo-600">browse</span>
@@ -226,7 +234,7 @@ const UploadVideo = () => {
                       <FontAwesomeIcon
                         onClick={() => setThumbnail(null)}
                         icon={faTimes}
-                        className="absolute top-0 right-0 text-2xl  bg-white p-2 rounded-lg "
+                        className="absolute top-0 right-0 text-2xl p-2 rounded-lg "
                       />
                     </div>
                   )}
@@ -236,7 +244,9 @@ const UploadVideo = () => {
                 <div className="text-red-500">{errors.thumbnail.message}</div>
               )}
               {errors.thumbnailError && (
-                <div className="text-red-500">{errors.thumbnailError.message}</div>
+                <div className="text-red-500">
+                  {errors.thumbnailError.message}
+                </div>
               )}
 
               <div className="mb-4">
@@ -248,7 +258,7 @@ const UploadVideo = () => {
                     className="form-checkbox"
                     {...register("isPublished")}
                   />
-                  <span className="ml-2 text-sm font-medium text-gray-600">
+                  <span className="ml-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                     Publish
                   </span>
                 </label>
@@ -256,9 +266,9 @@ const UploadVideo = () => {
               <div className="mt-6">
                 <button
                   type="submit"
-                  className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-black  focus:outline-none focus:ring-2 focus:ring-offset-2 "
+                  className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white dark:text-black bg-black dark:bg-white/95 focus:outline-none focus:ring-2 focus:ring-offset-2 "
                 >
-                    {isSubmitting ? "Uploading...": "Upload Video"}
+                  {isSubmitting ? "Uploading..." : "Upload Video"}
                 </button>
               </div>
             </div>

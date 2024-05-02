@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faThumbsUp,
@@ -21,6 +21,7 @@ import CommentContainer from '../components/Comment/CommentContainer'
 import { toggleSubscribe, getSubscriptionStatus } from '../services/subscription.service'
 import { toggleVideoLike, getVideoLikeInfo } from '../services/like.service'
 import { useSelector } from 'react-redux'
+import SubscribeBtn from '../components/SubscribeBtn'
 
 function Video() {
      const { videoId } = useParams();
@@ -45,15 +46,18 @@ function Video() {
        setDescriptionOpen(false);
      };
 
-     const handleSubscribe = async () => {
+     const handleSubscribe =  async () => {
+        setIsSubscribed((prev) => !prev)
+        if (!isSubscribed) {
+          setTotalSubscribers(totalSubscribers + 1);
+        } else {
+          setTotalSubscribers(totalSubscribers - 1);
+        }
+
         await toggleSubscribe(video?.owner?._id)
         .then((data) => {
-          setIsSubscribed(data.isSubscribed);
-          if(data.isSubscribed) {
-            setTotalSubscribers(totalSubscribers + 1)
-          } else {
-            setTotalSubscribers(totalSubscribers - 1)
-          }
+          // setIsSubscribed(data.isSubscribed);
+          // console.log(data)
         })
         .catch(err => console.log(err))
       }
@@ -102,10 +106,10 @@ function Video() {
   return loading ? (
     <Loader />
   ) : (
-    <div className="flex flex-col lg:flex-row lg:p-2">
+    <div className="flex flex-col lg:flex-row lg:p-2 w-full">
       {/*Left video title description likes channel comments */}
-      <div className="lg:max-w-[65vw] w-full">
-        <div>
+      <div className="lg:w-[65vw] w-full">
+        <div className="">
           {/*Video */}
           <VideoPlayer src={video?.videoFile} />
         </div>
@@ -125,30 +129,24 @@ function Video() {
               <div className="ml-2">
                 {/*name subscribers */}
                 <p className="font-bold">{video?.owner?.fullName}</p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                   {totalSubscribers}&nbsp;subscribers
                 </p>
               </div>
               <div>
                 {/*subscribe btn*/}
                 {video?.owner?._id !== user?._id && (
-                  <button
+                  <SubscribeBtn
+                    isSubscribed={isSubscribed}
                     onClick={handleSubscribe}
-                    className={`flex items-center justify-center ${
-                      isSubscribed
-                        ? "bg-gray-300 text-black"
-                        : "bg-black text-white"
-                    }  text-sm px-4 py-2 rounded-2xl`}
-                  >
-                    {isSubscribed ? "Subscribed" : "Subscribe"}
-                  </button>
+                  />
                 )}
               </div>
             </div>
             <div className="my-2 flex items-center gap-4">
               {/*like share save */}
               <button
-                className=" text-sm w-24 md:w-28 text-center px-4 py-1.5 cursor-pointer text-white bg-[#070707] hover:bg-[#353434]  rounded-2xl"
+                className=" text-sm w-24 md:w-28 text-center px-4 py-1.5 cursor-pointer text-white bg-[#070707] hover:bg-[#353434] dark:bg-gray-200 dark:hover:bg-gray-300 dark:text-black rounded-2xl"
                 onClick={handleToggleLike}
               >
                 {/*like icon*/}
@@ -156,13 +154,13 @@ function Video() {
                 &nbsp;
                 <span className="ml-2 text-md ">{totalLike}</span>
               </button>
-              <button className=" text-sm w-24 md:w-28  text-center px-4 py-1.5 cursor-pointer text-white bg-[#070707] hover:bg-[#353434]  rounded-2xl ">
+              <button className=" text-sm w-24 md:w-28  text-center px-4 py-1.5 cursor-pointer text-white bg-[#070707] hover:bg-[#353434]  dark:bg-gray-200 dark:hover:bg-gray-300 dark:text-black rounded-2xl ">
                 {/*share icon*/}
                 <FontAwesomeIcon icon={faShare} />
                 &nbsp;
                 <span className="ml-2 text-md">Share</span>
               </button>
-              <button className=" text-sm w-24 md:w-28  text-center px-4 py-1.5 cursor-pointer text-white bg-[#070707] hover:bg-[#353434]  rounded-2xl">
+              <button className=" text-sm w-24 md:w-28  text-center px-4 py-1.5 cursor-pointer text-white bg-[#070707] hover:bg-[#353434]  dark:bg-gray-200 dark:hover:bg-gray-300 dark:text-black rounded-2xl">
                 {/*save icon*/}
                 <FontAwesomeIcon icon={faListUl} />
                 &nbsp;
@@ -171,7 +169,7 @@ function Video() {
             </div>
           </div>
         </div>
-        <div className="mx-2 p-4 bg-[#e9e9e9] rounded-lg  mb-4">
+        <div className="mx-2 p-4 bg-white dark:bg-bgDarkSecondary rounded-lg  mb-4">
           {/*description*/}
           <div className="flex gap-5 items-center font-semibold">
             {/* views and date */}
@@ -203,7 +201,7 @@ function Video() {
         </div>
       </div>
 
-      <div className="mx-auto">
+      <div className="mx-auto lg:w-[40vw] xl:w-[35vw]">
         {
           /*right video suggestion*/
           suggestedVideo?.map((video) => {

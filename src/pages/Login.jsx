@@ -52,31 +52,27 @@ function Login() {
   console.log('login render')
   return (
     <section>
-      <div className="flex items-center justify-center  px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
-        <div className="p-5 w-full max-w-sm md:w-full md:max-w-md xl:p-4 2xl:p-6 xl:mx-auto xl:w-full xl:max-w-md 2xl:max-w-md border-2 shadow-sm rounded-lg">
+      <div className=" flex items-center justify-center  px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
+        <div className="bg-white dark:bg-bgDarkSecondary p-5 w-full max-w-sm md:w-full md:max-w-md xl:p-4 2xl:p-6 xl:mx-auto xl:w-full xl:max-w-md 2xl:max-w-md border-2 dark:border-gray-800 shadow-sm rounded-lg">
           <div className="mb-2 flex justify-center">
             <Logo height="64px" width="64px" />
           </div>
-          <h2 className="text-center text-2xl font-bold leading-tight text-black">
+          <h2 className="text-center text-2xl font-bold leading-tight ">
             Log in to your account
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600 ">
+          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-300 ">
             Don&apos;t have an account?{" "}
             <Link
               to={"/signup"}
               title="signup"
-              className="font-semibold text-black transition-all duration-200 hover:underline"
+              className="font-semibold  transition-all duration-200 hover:underline"
             >
               Create account
             </Link>
           </p>
           <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
             <div className="space-y-5">
-              {error && (
-                <div className="text-red-500">
-                  {error}
-                </div>
-              )}
+              {error && <div className="text-red-500">{error}</div>}
               <Input
                 type="text"
                 label="Email or Username"
@@ -108,7 +104,7 @@ function Login() {
               <Link
                 to={"#"}
                 title="forget password"
-                className="block text-sm text-right text-black hover:underline"
+                className="block text-sm text-right text-black dark:text-white hover:underline"
               >
                 {" "}
                 Forgot password?{" "}
@@ -119,9 +115,9 @@ function Login() {
 
               <div>
                 <button
-                  disabled={isSubmitting ? true: false}
+                  disabled={isSubmitting ? true : false}
                   type="submit"
-                  className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  className="inline-flex w-full items-center justify-center rounded-md bg-black dark:bg-white px-3.5 py-2.5 font-semibold leading-7 text-white dark:text-black hover:bg-black/80 dark:hover:bg-white/80"
                 >
                   Login
                 </button>

@@ -18,7 +18,7 @@ function Loader() {
   return (
     <div className="z-50 w-screen h-screen flex justify-center items-center fixed top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] backdrop-brightness-90">
       <ScaleLoader
-        color={"#000"}
+        color={"#000"} // TODO: darkMode loader color
         size={150}
         aria-label="Loading Spinner"
         data-testid="loader"
