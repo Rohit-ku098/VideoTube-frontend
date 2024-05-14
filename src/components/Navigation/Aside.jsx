@@ -7,9 +7,11 @@ import {
   faBell,
   faHistory,
   faVideo,
+  faListUl,
   faUpload,
   faCog,
   faUser,
+  faBlog,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { toggleMenu } from "../../store/navbarSlice";
@@ -56,7 +58,7 @@ function Aside() {
               className="z-40 h-screen  border-e-2 dark:border-gray-800 flex flex-col text-xl md:flex  bg-white fixed dark:bg-bgDarkSecondary left-0 "
             >
               <NavItem to="/" icon={faHome} label="Home" />
-              <NavItem to="/trending" icon={faFire} label="Trending" />
+              <NavItem to="/blog" icon={faBlog} label="Blog" />
               <NavItem
                 to="/subscriptions"
                 icon={faUser}
@@ -65,14 +67,14 @@ function Aside() {
               <NavItem to="/history" icon={faHistory} label="History" />
               <NavItem
                 to={`/playlist/feed/${user?._id}`}
-                icon={faVideo}
+                icon={faListUl}
                 label="Playlist"
               />
               <NavItem to="/upload" icon={faUpload} label="Upload" />
-              <NavItem
+              {/* <NavItem
                 icon={faCog}
                 label="Settings"
-              />
+              /> */}
             </aside>
           )}
         </div>
@@ -87,7 +89,7 @@ function Aside() {
               }  h-screen border-e-2 dark:border-0 flex flex-col  text-xl md:fle bg-white dark:bg-bgDarkSecondary `}
             >
               <NavItem to="/" icon={faHome} label="Home" />
-              <NavItem to="/trending" icon={faFire} label="Trending" />
+              <NavItem to="/blog" icon={faBlog} label="Blog" />
               <NavItem
                 to="/subscriptions"
                 icon={faUser}
@@ -96,14 +98,14 @@ function Aside() {
               <NavItem to="/history" icon={faHistory} label="History" />
               <NavItem
                 to={`/playlist/feed/${user?._id}`}
-                icon={faVideo}
+                icon={faListUl}
                 label="Playlist"
               />
               <NavItem to="/upload" icon={faUpload} label="Upload" />
-              <NavItem
+              {/* <NavItem
                 icon={faCog}
                 label="Settings"
-              />
+              /> */}
             </aside>
           }
         </div>

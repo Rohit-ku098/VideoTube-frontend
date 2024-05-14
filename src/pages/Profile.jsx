@@ -3,7 +3,7 @@ import { NavLink, Outlet, useParams } from "react-router-dom";
 import { getUserChannelProfile } from "../services/user.service";
 import { useSelector } from "react-redux";
 import SubscribeBtn from "../components/SubscribeBtn";
-import { toggleSubscribe } from "../services/subscription.service";
+import { getSubscriptionStatus, toggleSubscribe } from "../services/subscription.service";
 import VideoContainer from "../components/Video/VideoContainer";
 import { getAllVideos } from "../services/video.service";
 import Loader from "../components/Loader";
@@ -14,7 +14,6 @@ function Profile() {
   const [channelData, SetChannelData] = useState({});
   const [totalSubscribers, setTotalSubscribers] = useState(0);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [channelVideos, setChannelVideos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [videoOpen, setVideoOpen] = useState(true);
   const [playlistOpen, setPlaylistOpen] = useState(false);
@@ -29,7 +28,7 @@ function Profile() {
 
     await toggleSubscribe(channelData?._id)
       .then((data) => {
-        // setIsSubscribed(data.isSubscribed);
+        setIsSubscribed(data.isSubscribed);
         // console.log(data)
       })
       .catch((err) => console.log(err));
@@ -41,16 +40,16 @@ function Profile() {
       .then((res) => {
         SetChannelData(res);
         setTotalSubscribers(res?.subscriberCount);
-        setLoading(false);
-
-        getAllVideos({
-          userId: res?._id,
-        })
-          .then((res) => {
-            setChannelVideos(res);
-            console.log(res);
+        getSubscriptionStatus(res?._id)
+        .then((data) => {
+          setIsSubscribed(data.isSubscribed);
+          setLoading(false);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err)
+            setLoading(false);
+          });
+        
       })
       .catch((err) => {
         console.log(err);
@@ -58,15 +57,8 @@ function Profile() {
       });
   }, [userName]);
 
-  const handleFeedOpen = (feed) => {
-    if (feed === "video") {
-      setVideoOpen(true);
-      setPlaylistOpen(false);
-    } else if (feed === "playlist") {
-      setVideoOpen(false);
-      setPlaylistOpen(true);
-    }
-  };
+
+
 
   if (loading) return <Loader />;
 
@@ -96,7 +88,7 @@ function Profile() {
             {channelData?.fullName}
           </h1>
           <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-            <p>&#64;&nbsp;{channelData?.userName}</p>
+            <p>&#64;{channelData?.userName}</p>
             <p>{totalSubscribers} subscribers</p>
           </div>
           <div>
@@ -139,12 +131,13 @@ function Profile() {
             Playlists
           </NavLink>
           <NavLink
-            to={`/channel/${channelData?.userName}/community`}
+            to={`/channel/${channelData?.userName}/blogs`}
+            state={{ userId: channelData?._id }}
             end
             className={({ isActive }) => `${isActive ? " font-bold" : ""}  
               cursor-pointer`}
           >
-            Community
+            Blogs
           </NavLink>
         
         </div>

@@ -6,7 +6,7 @@ import VideoContainer from '../components/Video/VideoContainer';
 import Loader from '../components/Loader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSliders } from '@fortawesome/free-solid-svg-icons';
-import Confirmation from '../components/Confirmation';
+import Modal from '../components/Modal';
 
 function SearchPage() {
     // const dispatch = useDispatch()
@@ -55,7 +55,7 @@ function SearchPage() {
       </div>
       <VideoContainer />
       {isConfirmationPopupOpen && (
-        <Confirmation
+        <Modal
           title="Search filters"
           cancelBtn="Cancel"
           confirmBtn="Apply"
@@ -95,7 +95,7 @@ function SearchPage() {
               </ul>
             </div>
           </div>
-        </Confirmation>
+        </Modal>
       )}
     </div>
   );

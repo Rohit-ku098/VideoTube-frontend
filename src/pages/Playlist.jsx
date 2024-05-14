@@ -101,26 +101,6 @@ function Playlist({ wraped }) {
                     {playlist?.videos?.length || 0} videos
                   </p>{" "}
                 </div>
-                <div ref={dropdownRef} className="">
-                  {/* 3dot */}
-                  <FontAwesomeIcon
-                    icon={faEllipsisVertical}
-                    className={`m-2 cursor-pointer ${
-                      isDropdownOpen ? "visible" : "invisible"
-                    } group-hover/video:visible`}
-                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  />
-                  {isDropdownOpen && (
-                    <Dropdown
-                      options={[
-                        {
-                          title: "Delete",
-                          icon: faTrash,
-                        },
-                      ]}
-                    />
-                  )}
-                </div>
               </div>
             </div>
             <div className="p-3 m-2">

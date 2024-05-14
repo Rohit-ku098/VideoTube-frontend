@@ -52,7 +52,7 @@ const Searchbar = () => {
     >
       <input
         type="text"
-        {...register("query")}
+        {...register("query", { required: true, validate:  (val) => val.trim().length > 0 , })}
         className={` dark:bg-backgroundDark w-40 sm:w-48 md:block md:w-96 rounded-md rounded-e-none px-4 py-2 outline-none  
             ${isSearchOpen ? "block" : "hidden"} ${isDirty ? "block" : ""}`}
         placeholder="Search"

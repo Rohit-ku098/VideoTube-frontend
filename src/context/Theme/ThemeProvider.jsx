@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import themeContext, { useTheme } from "./themeContext";
 
 function ThemeProvider({ children }) {
   
- 
+  const [theme, setTheme] = useState("system");
   const handleTheme = () => {
     if (
       localStorage.theme === "dark" ||
@@ -14,26 +14,37 @@ function ThemeProvider({ children }) {
     } else {
       document.documentElement.classList.remove("dark");
     }
+
+    if (localStorage.theme === "dark") {
+      setTheme("dark");
+    } else if (localStorage.theme === "light") {
+      setTheme("light");
+    } else {
+      setTheme("system");
+    }
+
   }
 
-  handleTheme();
+
+
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)")
     mq.addEventListener("change", handleTheme);
+    handleTheme();
     return () => mq.removeEventListener("change", handleTheme)
   }, [])
 
   const darkTheme = () => {
     // Whenever the user explicitly chooses dark mode
     localStorage.theme = "dark";
-    document.documentElement.classList.add("dark");
+    handleTheme();
   };
 
   const lightTheme = () => {
     // Whenever the user explicitly chooses light mode
     localStorage.theme = "light";
-    document.documentElement.classList.remove("dark");
+    handleTheme();
   };
 
   const systemPreference = () => {
@@ -44,7 +55,7 @@ function ThemeProvider({ children }) {
 
 
   return (
-    <themeContext.Provider value={{ darkTheme, lightTheme, systemPreference }}>
+    <themeContext.Provider value={{ darkTheme, lightTheme, systemPreference, theme }}>
       {children}
     </themeContext.Provider>
   );

@@ -7,11 +7,25 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import Dropdown from "../Dropdown";
-import { getPlaylistById } from "../../services/playlist.service";
+import {
+  getPlaylistById,
+  deletePlaylist,
+} from "../../services/playlist.service";
+import { useToast } from "../../context/toastContext";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserPlaylists } from "../../store/playlistSlice";
+import Modal from "../Modal";
 
 function PlaylistCard({ playlistId, wraped = false }) {
   const dropdownRef = useRef(null);
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const userPlaylists = useSelector((state) => state.playlist.userPlaylists);
+  const user = useSelector((state) => state.user.user);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
+    useState(false);
   const [playlist, setPlaylist] = useState({});
 
   useEffect(() => {
@@ -29,6 +43,19 @@ function PlaylistCard({ playlistId, wraped = false }) {
       document.removeEventListener("mousedown", handleCloseDropdown);
     };
   }, []);
+
+  const handleDeletePlaylist = () => {
+    deletePlaylist(playlistId);
+    setIsDeleteConfirmationOpen(false);
+    dispatch(
+      setUserPlaylists(
+        userPlaylists?.filter((playlist) => playlist._id !== playlistId)
+      )
+    );
+    toast.open("Playlist deleted successfully");
+  };
+
+  
   return (
     <div
       className={`p-2 cursor-pointer w-full  ${
@@ -44,16 +71,22 @@ function PlaylistCard({ playlistId, wraped = false }) {
           >
             {/* Thumbnail */}
             <img
-              src={
-                playlist?.videos?.at(0)?.thumbnail || "/default-thumbnail.png"
-              }
+              src={playlist?.videos?.at(0)?.thumbnail || "/default-thumbnail.png"}
               alt=""
               className="max-w-full  max-h-full rounded-md"
             />
             {/* Total videos in playlist */}
-            <p className="m-2 p-0.5 text-xs bg-black bg-opacity-50 text-white absolute bottom-0 right-0">
-              {playlist?.videos?.length > 1 ? `${playlist?.videos?.length} videos`: `${playlist?.videos?.length} video`}
-            </p>{" "}
+            {
+              <p className="m-2 p-0.5 text-xs bg-black bg-opacity-50 text-white absolute bottom-0 right-0">
+                {
+                Object.keys(playlist).length > 0 ?
+                playlist?.videos?.length > 1
+                  ? `${playlist?.videos?.length} videos`
+                  : `${playlist?.videos?.length} video`
+                : "No videos"
+                }
+              </p>
+            }
           </div>
         </Link>
 
@@ -62,7 +95,7 @@ function PlaylistCard({ playlistId, wraped = false }) {
             className={`pl-3 ${wraped ? "w-full" : "w-[90%] "} flex flex-col `}
           >
             <p className="w-full text-md font-bold line-clamp-2">
-              {playlist?.name || "Playlist"} {/*title*/}
+              {playlist?.name} {/*title*/}
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-400">
               {playlist?.owner?.fullName} {/* channel name */}
@@ -73,29 +106,47 @@ function PlaylistCard({ playlistId, wraped = false }) {
               </p>
             </Link>
           </div>
-          <div
-            ref={dropdownRef}
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="w-8 h-8 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full flex justify-center items-center"
-          >
-            {/* 3dot */}
-            <FontAwesomeIcon
-              icon={faEllipsisVertical}
-              className={`m-2 cursor-pointer ${
-                isDropdownOpen ? "visible" : "invisible"
-              } group-hover/video:visible`}
-            />
-            {isDropdownOpen && (
-              <Dropdown
-                options={[
-                  {
-                    title: "Delete",
-                    icon: faTrash,
-                  },
-                ]}
+          {user?._id === playlist?.owner?._id && (
+            <div
+              ref={dropdownRef}
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="w-8 h-8 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full flex justify-center items-center"
+            >
+              {/* 3dot */}
+              <FontAwesomeIcon
+                icon={faEllipsisVertical}
+                className={`m-2 cursor-pointer ${
+                  isDropdownOpen ? "visible" : "invisible"
+                } group-hover/video:visible`}
               />
-            )}
-          </div>
+              {isDropdownOpen && (
+                <Dropdown
+                  options={[
+                    {
+                      title: "Delete",
+                      icon: faTrash,
+                      onClick: () =>
+                        setIsDeleteConfirmationOpen(!isDeleteConfirmationOpen),
+                    },
+                  ]}
+                />
+              )}
+
+              {isDeleteConfirmationOpen && (
+                <Modal
+                  title="Delete Playlist"
+                  cancelBtn={"Cancel"}
+                  confirmBtn={"Delete"}
+                  onConfirm={handleDeletePlaylist}
+                  onCancel={() =>
+                    setIsDeleteConfirmationOpen(!isDeleteConfirmationOpen)
+                  }
+                >
+                  <p>Are you sure you want to delete this playlist?</p>
+                </Modal>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

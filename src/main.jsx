@@ -21,6 +21,9 @@ import Profile from "./pages/Profile.jsx";
 import PlaylistFeed from "./pages/PlaylistFeed.jsx";
 import Playlist from "./pages/Playlist.jsx";
 import ThemeProvider from "./context/Theme/ThemeProvider.jsx";
+import WatchHistory from "./pages/WatchHistory.jsx";
+import Blog from "./pages/Blog.jsx";
+import ChannelBlog from "./components/Blog/ChannelBlog.jsx";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +37,7 @@ const router = createBrowserRouter([
           {
             path: "/",
             element: (
-              <AuthLayout>
+              <AuthLayout authentication={true}>
                 <Home />
               </AuthLayout>
             ),
@@ -76,7 +79,7 @@ const router = createBrowserRouter([
                 path: "/channel/:userName/videos",
                 element: (
                   <AuthLayout>
-                    <ChannelVideos/>
+                    <ChannelVideos />
                   </AuthLayout>
                 ),
               },
@@ -88,13 +91,21 @@ const router = createBrowserRouter([
                   </AuthLayout>
                 ),
               },
+              {
+                path: "/channel/:userName/blogs",
+                element: (
+                  <AuthLayout authentication={true}>
+                    <ChannelBlog/>
+                  </AuthLayout>
+                )
+              }
             ],
           },
           {
             path: "/playlist/feed/:userId",
             element: (
               <AuthLayout authentication={true}>
-                <PlaylistFeed />
+                <PlaylistFeed createPlaylistOption={true} />
               </AuthLayout>
             ),
           },
@@ -106,6 +117,22 @@ const router = createBrowserRouter([
               </AuthLayout>
             ),
           },
+          {
+            path: "/history",
+            element: (
+              <AuthLayout authentication={true}>
+                <WatchHistory />
+              </AuthLayout>
+            ),
+          },
+          {
+            path: "/blog",
+            element: (
+              <AuthLayout authentication={true}>
+                <Blog/>
+              </AuthLayout>
+            )
+          }
         ],
       },
       {

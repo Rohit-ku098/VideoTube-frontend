@@ -17,7 +17,7 @@ import { logoutUser } from "../../services/user.service";
 import Dropdown from "../Dropdown";
 import Logo from "../Logo";
 import Searchbar from "./Searchbar";
-import Confirmation from "../Confirmation";
+import Modal from "../Modal";
 import Loader from "../Loader";
 import Appearance from "../Appearance";
 
@@ -164,9 +164,9 @@ const Navbar = () => {
       </nav>
 
       {isConfirmationPopupOpen && 
-        <Confirmation onCancel={handleConfirmationPopup} onConfirm={handleLogout} confirmBtn="Log Out">
+        <Modal title="Log Out" onCancel={handleConfirmationPopup} onConfirm={handleLogout} confirmBtn="Log Out">
           <p>Are you sure to log out?</p>
-        </Confirmation>}
+        </Modal>}
 
       {isAppearanceOpen && <Appearance setAppearanceOpen={setIsAppearanceOpen}/>}
       {loading && <Loader />}

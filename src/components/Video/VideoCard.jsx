@@ -11,19 +11,23 @@ import { getAge } from '../../utils/getAge'
 import { formatVideoDuration } from '../../utils/formatVideoDuration';
 import PlaylistModal from '../Playlist/PlaylistModal';
 
-function VideoCard({video, wraped = false, optionsToDropdown = []}) {
-  const dropdownRef = useRef(null)
+function VideoCard({
+  video,
+  wraped = false,
+  optionsToDropdown = [],
+}) {
+  const dropdownRef = useRef(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [date, setDate] = useState(null)
-  const [views, setViews] = useState(null)
-  const [duration, setDuration] = useState(null)
-  const [isPlaylistModalOpen, setIsPlaylistModalOpen] = useState(false)
+  const [date, setDate] = useState(null);
+  const [views, setViews] = useState(null);
+  const [duration, setDuration] = useState(null);
+  const [isPlaylistModalOpen, setIsPlaylistModalOpen] = useState(false);
 
   useEffect(() => {
     setDate(getAge(video?.createdAt));
     setViews(formatViews(video?.views));
     setDuration(formatVideoDuration(video?.duration));
-  }, [video])
+  }, [video]);
 
   useEffect(() => {
     const handleCloseDropdown = (e) => {
@@ -35,11 +39,11 @@ function VideoCard({video, wraped = false, optionsToDropdown = []}) {
     return () => {
       document.removeEventListener("mousedown", handleCloseDropdown);
     };
-  }, [])
+  }, []);
 
   const openPlaylistModal = () => {
     setIsPlaylistModalOpen(true);
-  }
+  };
 
   return (
     <div
@@ -83,7 +87,11 @@ function VideoCard({video, wraped = false, optionsToDropdown = []}) {
           <div
             className={`pl-3 ${wraped ? "w-full" : "w-[90%] "} flex flex-col `}
           >
-            <p className="w-full text-md font-bold line-clamp-1 md:line-clamp-2">
+            <p
+              className={`w-full text-md font-bold ${
+                wraped ? "line-clamp-1" : "line-clamp-2"
+              }`}
+            >
               {video?.title || "This is title"} {/*title*/}
             </p>
             <p className="text-sm text-slate-500 dark:text-slate-300">

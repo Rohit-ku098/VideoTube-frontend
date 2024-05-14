@@ -12,7 +12,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons'
 import Loader from '../components/Loader'
 import VideoPlayer from '../components/Video/VideoPlayer'
-import { useParams } from 'react-router-dom'
+import { Link, useHref, useParams } from 'react-router-dom'
 import { getAllVideos, getVideoById } from '../services/video.service'
 import VideoCard from '../components/Video/VideoCard'
 import {formatViews} from '../utils/formatViews'
@@ -22,6 +22,7 @@ import { toggleSubscribe, getSubscriptionStatus } from '../services/subscription
 import { toggleVideoLike, getVideoLikeInfo } from '../services/like.service'
 import { useSelector } from 'react-redux'
 import SubscribeBtn from '../components/SubscribeBtn'
+import LikeBtn from '../components/LikeBtn'
 
 function Video() {
      const { videoId } = useParams();
@@ -62,17 +63,29 @@ function Video() {
         .catch(err => console.log(err))
       }
 
-      const handleToggleLike = async () => {
-        await toggleVideoLike(videoId)
+      // const handleToggleLike = async () => {
+      //   await toggleVideoLike(videoId)
 
-        await getVideoLikeInfo(videoId).then((data) => {
-          setTotalLike(data.totalLike);
-          setLiked(data.isLiked)
-          // console.log(data.totalLike)
-        });
+      //   await getVideoLikeInfo(videoId).then((data) => {
+      //     setTotalLike(data.totalLike);
+      //     setLiked(data.isLiked)
+      //     // console.log(data.totalLike)
+      //   });
 
+      // }
+
+      const handleShare = async () => {
+        const shareData = {
+          title: "Video Url",
+          url: location.href,
+        };
+        try {
+          await navigator.share(shareData)
+        } catch (error) {
+          console.log(error)
+          alert("error sharing")
+        }
       }
-
      useEffect(() => {
        getVideoById(videoId).then((data) => {
          setVideo(data);
@@ -118,14 +131,16 @@ function Video() {
           <div className="my-2 flex justify-between items-center flex-wrap">
             <div className="my-2 flex items-center gap-4">
               {/*avatar channel name subscribe btn */}
-              <div className="h-10 w-10 rounded-full">
-                {/*avatar */}
-                <img
-                  src={video?.owner?.avatar}
-                  alt=""
-                  className="rounded-full h-full w-full"
-                />
-              </div>
+              <Link to={`/channel/${video?.owner?.userName}`}>
+                <div className="h-10 w-10 rounded-full">
+                  {/*avatar */}
+                  <img
+                    src={video?.owner?.avatar}
+                    alt=""
+                    className="rounded-full h-full w-full"
+                  />
+                </div>
+              </Link>
               <div className="ml-2">
                 {/*name subscribers */}
                 <p className="font-bold">{video?.owner?.fullName}</p>
@@ -145,16 +160,11 @@ function Video() {
             </div>
             <div className="my-2 flex items-center gap-4">
               {/*like share save */}
+              <LikeBtn likeTo={"video"} ContentId={videoId} type="solid" />
               <button
-                className=" text-sm w-24 md:w-28 text-center px-4 py-1.5 cursor-pointer text-white bg-[#070707] hover:bg-[#353434] dark:bg-gray-200 dark:hover:bg-gray-300 dark:text-black rounded-2xl"
-                onClick={handleToggleLike}
+                onClick={handleShare}
+                className=" text-sm w-24 md:w-28  text-center px-4 py-1.5 cursor-pointer text-white bg-[#070707] hover:bg-[#353434]  dark:bg-gray-200 dark:hover:bg-gray-300 dark:text-black rounded-2xl "
               >
-                {/*like icon*/}
-                <FontAwesomeIcon icon={liked ? faThumbsUp : faThumbsOup} />
-                &nbsp;
-                <span className="ml-2 text-md ">{totalLike}</span>
-              </button>
-              <button className=" text-sm w-24 md:w-28  text-center px-4 py-1.5 cursor-pointer text-white bg-[#070707] hover:bg-[#353434]  dark:bg-gray-200 dark:hover:bg-gray-300 dark:text-black rounded-2xl ">
                 {/*share icon*/}
                 <FontAwesomeIcon icon={faShare} />
                 &nbsp;

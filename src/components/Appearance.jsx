@@ -1,15 +1,14 @@
 import React, { useEffect } from "react";
-import Confirmation from "./Confirmation";
+import Modal from "./Modal";
 import { useTheme } from "../context/Theme/themeContext";
 
 function Appearance({ setAppearanceOpen }) {
-  const { lightTheme, darkTheme, systemPreference } = useTheme();
+  const { lightTheme, darkTheme, systemPreference, theme } = useTheme();
   
   const handleThemeToggle = (e) => {
     console.log(e.target.value);
     if (e.target.value === "light") {
       lightTheme();
-      console.log("light called");
     } else if (e.target.value === "dark") {
       darkTheme();
     } else {
@@ -20,7 +19,10 @@ function Appearance({ setAppearanceOpen }) {
 
   return (
     <div>
-      <Confirmation title="Appearance" onCancel={() => setAppearanceOpen(false)}>
+      <Modal
+        title="Appearance"
+        onCancel={() => setAppearanceOpen(false)}
+      >
         <div className="flex flex-col gap-3 ">
           <label htmlFor="darkMode">
             <input
@@ -28,6 +30,7 @@ function Appearance({ setAppearanceOpen }) {
               name="theme"
               id="darkMode"
               value={"dark"}
+              checked={theme === "dark"}
               onChange={handleThemeToggle}
               className="accent-black mr-2"
             />
@@ -39,6 +42,7 @@ function Appearance({ setAppearanceOpen }) {
               name="theme"
               id="lightMode"
               value={"light"}
+              checked={theme === "light"}
               onChange={handleThemeToggle}
               className="accent-black mr-2"
             />
@@ -50,13 +54,14 @@ function Appearance({ setAppearanceOpen }) {
               name="theme"
               id="systemDefault"
               value={"system"}
+              checked={theme === "system"}
               onChange={handleThemeToggle}
               className="accent-black mr-2"
             />
             System Default
           </label>
         </div>
-      </Confirmation>
+      </Modal>
     </div>
   );
 }

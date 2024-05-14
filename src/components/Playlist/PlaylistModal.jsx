@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import Confirmation from '../Confirmation'
+import Modal from '../Modal'
 import { getUserPlaylist, addVideoToPlaylist, createPlaylist, removeVideoFromPlaylist } from '../../services/playlist.service'
 import { useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -64,12 +64,12 @@ function PlaylistModal({videoId, setShowModal}) {
         console.log(data)
         const playlist = await createPlaylist(data.name, data.description)
         setPlaylists([...playlists, playlist])
-        openInputBox(false)
+        setOpenInputBox(false)
     }
 
     return (
       <div>
-        <Confirmation
+        <Modal
           title="Choose a playlist"
           onCancel={() => setShowModal(false)}
         >
@@ -114,7 +114,7 @@ function PlaylistModal({videoId, setShowModal}) {
               </form>
             )}
           </div>
-        </Confirmation>
+        </Modal>
       </div>
     );
 }

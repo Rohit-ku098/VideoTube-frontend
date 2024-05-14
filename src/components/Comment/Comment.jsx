@@ -10,12 +10,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Dropdown from "../Dropdown";
 import { useSelector } from "react-redux";
-import Confirmation from "../Confirmation";
+import Modal from "../Modal";
 import { deleteComment, updateComment } from "../../services/comment.service";
 import { useToast } from "../../context/toastContext";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Input from "../Input";
+import LikeBtn from "../LikeBtn";
 
 const Comment = ({ comment, video }) => {
   const [commentContent, setCommentContent] = useState(comment?.content);
@@ -50,7 +51,6 @@ const Comment = ({ comment, video }) => {
 
   const handleDeleteConfirmationPopup = () => {
     setIsDeleteOpen(!isDeleteOpen);
-    setIsDropdownOpen(false);
   };
 
   const handleOpenEditComment = () => {
@@ -94,14 +94,16 @@ const Comment = ({ comment, video }) => {
   return (
     !isDeleted && (
       <div className="w-full p-4 my-2 flex gap-3 group/comment">
-        <div>
-          {/*avatar*/}
-          <img
-            src={comment?.owner?.avatar}
-            alt=""
-            className="w-10 h-10 rounded-full"
-          />
-        </div>
+        <Link to={`/channel/${comment?.owner.userName}`}>
+          <div className="w-10 shrink-0">
+            {/*avatar*/}
+            <img
+              src={comment?.owner?.avatar}
+              alt=""
+              className="w-10 h-10 rounded-full"
+            />
+          </div>
+        </Link>
         <div className="w-full">
           {/*username age comment like */}
           <div className="flex items-center gap-2 ">
@@ -113,7 +115,7 @@ const Comment = ({ comment, video }) => {
               }`}
             >
               {/*owner name */}
-              @&nbsp;{comment?.owner?.userName}
+              &#64;{comment?.owner?.userName}
             </p>
             <p className="text-gray-500 dark:text-gray-300 text-sm">
               {/* age */}
@@ -128,7 +130,9 @@ const Comment = ({ comment, video }) => {
           <div className="w-full">
             {!isEditOpen ? (
               //comment content
-              <pre className="font-sans text-wrap">{commentContent}</pre>
+              <pre className="font-sans whitespace-pre-wrap">
+                {commentContent}
+              </pre>
             ) : (
               //edit comment
               <form onSubmit={handleSubmit(onSubmit)} className="w-full">
@@ -138,6 +142,7 @@ const Comment = ({ comment, video }) => {
                   autoComplete="off"
                   {...register("content", {
                     max: 200,
+                    validate: val => val.trim().length > 0,
                     onChange: (e) => {
                       setCommentContent(e.target.value);
                     },
@@ -166,6 +171,14 @@ const Comment = ({ comment, video }) => {
               </form>
             )}
           </div>
+          <div className="w-full px-2">
+            {/* like comment share */}
+            <LikeBtn
+              likeTo={"comment"}
+              ContentId={comment?._id}
+              type="regular"
+            />
+          </div>
         </div>
         <div
           className={`ml-auto cursor-pointer p-3 ${
@@ -174,10 +187,13 @@ const Comment = ({ comment, video }) => {
           ref={dropdownRef}
         >
           {/* 3 dots */}
-          <FontAwesomeIcon
-            icon={faEllipsisVertical}
+          <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          />
+            className="w-8 h-8 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full flex justify-center items-center"
+          >
+            <FontAwesomeIcon icon={faEllipsisVertical} />
+          </button>
+
           {isDropdownOpen && (
             <Dropdown
               options={
@@ -205,7 +221,7 @@ const Comment = ({ comment, video }) => {
             />
           )}
           {isDeleteOpen && (
-            <Confirmation
+            <Modal
               title="Delete Comment"
               cancelBtn={"Cancel"}
               confirmBtn={"Delete"}
@@ -213,7 +229,7 @@ const Comment = ({ comment, video }) => {
               onConfirm={handleDeleteComment}
             >
               <p>Are you sure to delete? </p>
-            </Confirmation>
+            </Modal>
           )}
         </div>
       </div>

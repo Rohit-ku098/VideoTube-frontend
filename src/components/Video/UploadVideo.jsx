@@ -73,6 +73,7 @@ const UploadVideo = () => {
     })
   };
 
+  const isEmpty = value => value.trim().length > 0 || "This field is required";
   return (
     <div className="pt-6 p-4">
       {loading && <Loader />}
@@ -91,6 +92,7 @@ const UploadVideo = () => {
                       value: true,
                       message: "Title is required",
                     },
+                    validate: isEmpty,
                   })}
                 />
               </div>

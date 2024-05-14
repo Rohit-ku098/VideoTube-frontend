@@ -10,7 +10,10 @@ function ToastProvider({children}) {
     const id = Date.now()
     
     const open = (message, timeout=4000) => {
-        setToast([...toast,{ message, id }])
+        setToast([
+          ...(toast.filter((toast) => Date.now() - toast.id <= timeout )),
+          { message, id},
+        ]);
         setTime(timeout)
         setTimeout(() => close(id), timeout)
     }

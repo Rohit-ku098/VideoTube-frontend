@@ -42,7 +42,7 @@ const CommentContainer = ({ video }) => {
             className="w-full border-0 border-b-2 border-b-black dark:border-white p-2 focus:outline-none"
             placeholder="Add a comment..."
             autoComplete="off"
-            {...register("content", { required: true, max: 100 })}
+            {...register("content", { required: true, max: 100, validate: val => val.trim().length > 0 })}
           />
           {isLoggedIn ? (
             <div className="flex justify-end mt-2">

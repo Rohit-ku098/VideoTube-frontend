@@ -18,7 +18,7 @@ const toggleCommentLike = async (commentId) => {
 };
 const toggleTweetLike = async (tweetId) => {
   try {
-    const res = await api.post(`/likes/toggle//t${tweetId}`);
+    const res = await api.post(`/likes/toggle/t/${tweetId}`);
     return res.data?.data;
   } catch (error) {
     console.log(error);
@@ -33,17 +33,17 @@ const getVideoLikeInfo = async (videoId) => {
     console.log(error);
   }
 };
-const getCommentLikeInfo = async (videoId) => {
+const getCommentLikeInfo = async (commentId) => {
   try {
-    const res = await api.get(`/likes/v/${videoId}`);
+    const res = await api.get(`/likes/c/${commentId}`);
     return res.data?.data;
   } catch (error) {
     console.log(error);
   }
 };
-const getTweetLikeInfo = async (videoId) => {
+const getTweetLikeInfo = async (tweetId) => {
   try {
-    const res = await api.get(`/likes/v/${videoId}`);
+    const res = await api.get(`/likes/t/${tweetId}`);
     return res.data?.data;
   } catch (error) {
     console.log(error);
