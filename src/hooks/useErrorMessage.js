@@ -4,11 +4,11 @@ const useErrorMessage = (error='') => {
   const errorMessageRegex = /<pre>Error:(.*?)<br>/;
 
   // Extracting the error message using regex
-  const match = error.match(errorMessageRegex);
+  const match = error?.match(errorMessageRegex);
 
   // If match is found, extract the error message
   let errorMessage = "";
-  if (match && match.length > 1) {
+  if (match && match?.length > 1) {
     errorMessage = match[1];
   }
 

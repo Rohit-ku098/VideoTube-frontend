@@ -35,7 +35,7 @@ function Login() {
       const res = await api
         .post("/users/login", formData)
       console.log(res.status)
-       if(res.status === 200) {
+       if(res?.status === 200) {
         localStorage.setItem("user", JSON.stringify(res.data?.data?.user))
         dispatch(login(res.data?.data?.user))
         const user = useSelector(state => state.user.user)
