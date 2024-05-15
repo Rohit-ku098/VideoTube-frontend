@@ -37,8 +37,9 @@ function SearchPage() {
   console.log('search page render')
   return (
     <div className=''>
+      {/*TODO: Add filter option on search */}
       {/* {loading && <Loader />} */}
-      <div className=" flex justify-between items-center gap-2 border-b dark:border-gray-800 p-4 ">
+      {/* <div className=" flex justify-between items-center gap-2 border-b dark:border-gray-800 p-4 ">
         <ul className="flex items-center gap-2 [&>*]:bg-black dark:[&>*]:bg-white/95 [&>*]:text-white dark:[&>*]:text-black text-sm [&>*]:py-1 [&>*]:px-2 [&>*]:rounded-lg [&>*]:cursor-pointer">
           <li>All</li>
           <li>Watched</li>
@@ -52,9 +53,9 @@ function SearchPage() {
           <FontAwesomeIcon icon={faSliders} className="text-xl" />
           <span className="text-lg">Filter</span>
         </div>
-      </div>
+      </div> */}
       <VideoContainer />
-      {isConfirmationPopupOpen && (
+      {/* {isConfirmationPopupOpen && (
         <Modal
           title="Search filters"
           cancelBtn="Cancel"
@@ -96,7 +97,7 @@ function SearchPage() {
             </div>
           </div>
         </Modal>
-      )}
+      )} */}
     </div>
   );
 }
