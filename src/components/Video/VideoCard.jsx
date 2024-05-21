@@ -54,7 +54,7 @@ function VideoCard({
       <div className={`flex ${wraped ? "flex-row items-start " : "flex-col"}`}>
         <Link to={`/video/${video?._id}`}>
           <div
-            className={` ${
+            className={`w-full ${
               wraped ? "max-w-52" : "max-h-56 w-full"
             }  aspect-video relative flex justify-center items-center bg-black dark:bg-[#3d3d4e72] rounded-md`}
           >
@@ -72,8 +72,8 @@ function VideoCard({
         </Link>
 
         <div className="w-full flex justify-between mt-2 ">
-          <div className="w-8 h-8 rounded-full">
-            {!wraped && (
+          {!wraped && (
+            <div className=" rounded-full">
               <Link to={`/channel/${video?.owner?.userName}`}>
                 {/* channel avatar */}
                 <img
@@ -82,8 +82,8 @@ function VideoCard({
                   className="w-8 h-8 rounded-full"
                 />
               </Link>
-            )}
-          </div>
+            </div>
+          )}
           <div
             className={`pl-3 ${wraped ? "w-full" : "w-[90%] "} flex flex-col `}
           >

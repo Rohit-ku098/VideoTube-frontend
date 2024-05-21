@@ -3,10 +3,10 @@ import { useForm } from "react-hook-form";
 import Input from '../Input'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { uploadVideo } from "../../services/video.service";
 import Loader from "../Loader";
-import { useToast } from "../../context/toastContext";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../services/conf";
 
 const UploadVideo = () => {
   const { register, handleSubmit, setError, clearErrors, formState: {errors, isSubmitting, isDirty} } = useForm({defaultValues: {
@@ -19,7 +19,7 @@ const UploadVideo = () => {
   const [videoFile, setVideoFile] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   const [loading, setLoading] = useState(false)
-  const toast = useToast();
+  const [uploadProgress, setUploadProgress] = useState(0)
   const navigate = useNavigate();
 
   const handleVideoDrop = (event) => {
@@ -55,6 +55,24 @@ const UploadVideo = () => {
     clearErrors()
   }, [isDirty])
 
+    
+  const uploadVideo = async (data) => {
+    try {
+      const response = await api.post("/videos", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        onUploadProgress: ({loaded, total}) => {
+          console.log(loaded, total)
+          setUploadProgress(Math.floor((loaded/total)*100))
+        }
+      });
+      return response.data?.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const onSubmit = (data) => {
     console.log(data)
     console.log('submitting')
@@ -65,14 +83,16 @@ const UploadVideo = () => {
     formData.append("videoFile", videoFile);
     formData.append("isPublished", data.isPublished)
     setLoading(true)
+
     uploadVideo(formData).then((res) => {
       setLoading(false)
       console.log(res)
-      toast.open('Video uploaded successfully', 6000)
+      toast.success('Video uploaded successfully', 6000)
       navigate('/')
     })
   };
 
+  console.log(uploadProgress + '%')
   const isEmpty = value => value.trim().length > 0 || "This field is required";
   return (
     <div className="pt-6 p-4">

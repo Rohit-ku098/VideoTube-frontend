@@ -12,11 +12,13 @@ import Dropdown from "../Dropdown";
 import { useSelector } from "react-redux";
 import Modal from "../Modal";
 import { deleteComment, updateComment } from "../../services/comment.service";
-import { useToast } from "../../context/toastContext";
+
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Input from "../Input";
 import LikeBtn from "../LikeBtn";
+import { ToastContainer, toast } from 'react-toastify'
+
 
 const Comment = ({ comment, video }) => {
   const [commentContent, setCommentContent] = useState(comment?.content);
@@ -29,11 +31,11 @@ const Comment = ({ comment, video }) => {
   const [isEdited, setIsEdited] = useState(false);
   const dropdownRef = useRef(null);
   const { user } = useSelector((state) => state.user);
-  const toast = useToast();
+
 
   useEffect(() => {
     const handleCloseDropdown = (e) => {
-      if (!dropdownRef.current.contains(e.target)) {
+      if (!dropdownRef.current?.contains(e.target)) {
         setIsDropdownOpen(false);
       }
     };
@@ -62,7 +64,9 @@ const Comment = ({ comment, video }) => {
     deleteComment(comment?._id).then(() => {
       setIsDeleteOpen(false);
       setIsDeleted(true);
-      toast.open("Comment deleted successfully");
+      toast.error("Comment deleted successfully", {
+        position: "bottom-left",
+      });
     });
   };
 
@@ -93,7 +97,7 @@ const Comment = ({ comment, video }) => {
   };
   return (
     !isDeleted && (
-      <div className="w-full p-4 my-2 flex gap-3 group/comment">
+      <div className="w-full my-4 flex gap-3 group/comment">
         <Link to={`/channel/${comment?.owner.userName}`}>
           <div className="w-10 shrink-0">
             {/*avatar*/}

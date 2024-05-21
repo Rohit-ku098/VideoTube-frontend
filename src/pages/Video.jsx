@@ -23,6 +23,8 @@ import { toggleVideoLike, getVideoLikeInfo } from '../services/like.service'
 import { useSelector } from 'react-redux'
 import SubscribeBtn from '../components/SubscribeBtn'
 import LikeBtn from '../components/LikeBtn'
+import VideoSkeleton from '../components/Video/VideoSkeleton'
+import VideoPageSkeleton from '../components/Video/VideoPageSkeleton'
 
 function Video() {
      const { videoId } = useParams();
@@ -36,7 +38,7 @@ function Video() {
       const [totalSubscribers, setTotalSubscribers] = useState(0)
       const [liked, setLiked] = useState(false)
       const [totalLike, setTotalLike] = useState(0)
-      const [loading, setLoading] = useState(true)
+      const [loading, setLoading] = useState(false)
 
       const {user} = useSelector(state => state.user)
 
@@ -87,15 +89,20 @@ function Video() {
         }
       }
      useEffect(() => {
-       getVideoById(videoId).then((data) => {
-         setVideo(data);
-         setDate(getAge(data.createdAt));
-         setViews(formatViews(data.views));
-         setTotalSubscribers(data?.owner?.subscribers)
-         getSubscriptionStatus(data?.owner?._id).then((data) =>
-           setIsSubscribed(data?.isSubscribed)
-         );
-       });
+      setLoading(true)
+      getVideoById(videoId).then((data) => {
+        setVideo(data);
+        setDate(getAge(data.createdAt));
+        setViews(formatViews(data.views));
+        setTotalSubscribers(data?.owner?.subscribers)
+        getSubscriptionStatus(data?.owner?._id).then((data) =>{
+          setIsSubscribed(data?.isSubscribed)
+          setLoading(false)
+        });
+      })
+      .catch(err => {
+        console.error(err)
+      });
 
        getAllVideos({}).then((data) => {
          setSuggestedVideo(data);
@@ -109,16 +116,20 @@ function Video() {
 
      }, [videoId]);
      
-     useEffect(() => {
-      if(video && user){
-        setLoading(false)
-      }
-     }, [video, user])
+    //  useEffect(() => {
+    //   if(video && user){
+    //     setLoading(false)
+    //   }
+    //  }, [video, user])
     
     //  console.log(video)
-  return loading ? (
-    <Loader />
-  ) : (
+
+    
+  if(loading) return (
+    <VideoPageSkeleton />
+  ) 
+
+  return (
     <div className="flex flex-col lg:flex-row lg:p-2 w-full">
       {/*Left video title description likes channel comments */}
       <div className="lg:w-[65vw] w-full">
@@ -127,9 +138,9 @@ function Video() {
           <VideoPlayer src={video?.videoFile} />
         </div>
         <div className="mx-2">
-          <h2 className="text-xl font-bold">{video?.title}</h2>
+          <h2 className="mt-2 text-xl font-bold">{video?.title}</h2>
           <div className="my-2 flex justify-between items-center flex-wrap">
-            <div className="my-2 flex items-center gap-4">
+            <div className="w-full md:w-fit my-2 flex items-center gap-4">
               {/*avatar channel name subscribe btn */}
               <Link to={`/channel/${video?.owner?.userName}`}>
                 <div className="h-10 w-10 rounded-full">
@@ -141,21 +152,23 @@ function Video() {
                   />
                 </div>
               </Link>
-              <div className="ml-2">
-                {/*name subscribers */}
-                <p className="font-bold">{video?.owner?.fullName}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  {totalSubscribers}&nbsp;subscribers
-                </p>
-              </div>
-              <div>
-                {/*subscribe btn*/}
-                {video?.owner?._id !== user?._id && (
-                  <SubscribeBtn
-                    isSubscribed={isSubscribed}
-                    onClick={handleSubscribe}
-                  />
-                )}
+              <div className='w-full flex gap-2 justify-between'>
+                <div className="ml-2">
+                  {/*name subscribers */}
+                  <p className="font-bold">{video?.owner?.fullName}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    {totalSubscribers}&nbsp;subscribers
+                  </p>
+                </div>
+                <div className='mr-2 md:mr-0'>
+                  {/*subscribe btn*/}
+                  {video?.owner?._id !== user?._id && (
+                    <SubscribeBtn
+                      isSubscribed={isSubscribed}
+                      onClick={handleSubscribe}
+                    />
+                  )}
+                </div>
               </div>
             </div>
             <div className="my-2 flex items-center gap-4">
@@ -214,13 +227,17 @@ function Video() {
       <div className="mx-auto lg:w-[40vw] xl:w-[35vw]">
         {
           /*right video suggestion*/
-          suggestedVideo?.map((video) => {
-            return (
-              video._id !== videoId && (
-                <VideoCard wraped={true} video={video} key={video._id} />
-              )
-            );
-          })
+          suggestedVideo.length > 0
+            ? suggestedVideo?.map((video) => {
+                return (
+                  video._id !== videoId && (
+                    <VideoCard wraped={true} video={video} key={video._id} />
+                  )
+                );
+              })
+            : Array.from({ length: 5 })?.map((video) => {
+                return <VideoSkeleton wraped={true} />;
+              })
         }
       </div>
     </div>

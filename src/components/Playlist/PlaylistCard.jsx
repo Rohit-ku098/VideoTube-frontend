@@ -11,25 +11,32 @@ import {
   getPlaylistById,
   deletePlaylist,
 } from "../../services/playlist.service";
-import { useToast } from "../../context/toastContext";
+
 import { useDispatch, useSelector } from "react-redux";
 import { setUserPlaylists } from "../../store/playlistSlice";
 import Modal from "../Modal";
+import { toast } from 'react-toastify'
+import PlaylistCardSkeleton from "./PlaylistCardSkeleton";
 
 function PlaylistCard({ playlistId, wraped = false }) {
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
-  const toast = useToast();
+
   const userPlaylists = useSelector((state) => state.playlist.userPlaylists);
   const user = useSelector((state) => state.user.user);
 
+  const [loading, setLoading] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
     useState(false);
   const [playlist, setPlaylist] = useState({});
 
   useEffect(() => {
-    getPlaylistById(playlistId).then((res) => setPlaylist(res));
+    setLoading(true)
+    getPlaylistById(playlistId).then((res) => {
+      setPlaylist(res);
+      setLoading(false);
+    });
   }, [playlistId]);
 
   useEffect(() => {
@@ -52,10 +59,12 @@ function PlaylistCard({ playlistId, wraped = false }) {
         userPlaylists?.filter((playlist) => playlist._id !== playlistId)
       )
     );
-    toast.open("Playlist deleted successfully");
+    toast.error("Playlist deleted successfully",{
+      position: 'bottom-left'
+    });
   };
 
-  
+  if(loading) return <PlaylistCardSkeleton/>
   return (
     <div
       className={`p-2 cursor-pointer w-full  ${
@@ -71,7 +80,7 @@ function PlaylistCard({ playlistId, wraped = false }) {
           >
             {/* Thumbnail */}
             <img
-              src={playlist?.videos?.at(0)?.thumbnail || "/default-thumbnail.png"}
+              src={playlist?.videos?.at(0)?.thumbnail }
               alt=""
               className="max-w-full  max-h-full rounded-md"
             />
@@ -90,7 +99,7 @@ function PlaylistCard({ playlistId, wraped = false }) {
           </div>
         </Link>
 
-        <div className="w-full flex justify-between mt-2 ">
+        <div className="w-full  flex justify-between mt-2 ">
           <div
             className={`pl-3 ${wraped ? "w-full" : "w-[90%] "} flex flex-col `}
           >

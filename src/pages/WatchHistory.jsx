@@ -14,6 +14,7 @@ import {
 import VideoCard from "../components/Video/VideoCard";
 import Loader from "../components/Loader";
 import Modal from "../components/Modal";
+import { toast } from "react-toastify";
 
 function WatchHistory() {
   const [historyVideos, setHistoryVideos] = useState([]);
@@ -51,6 +52,9 @@ function WatchHistory() {
       await clearWatchHistory();
       setHistoryVideos([]);
       setLoading(false);
+      toast.info("Watch history cleared successfully", {
+        position: "bottom-left",
+      });
     } catch (error) {
       console.log(error);
     }

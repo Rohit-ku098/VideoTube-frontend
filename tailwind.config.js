@@ -11,6 +11,8 @@ export default {
         
         backgroundDark: "#06161e",
         bgDarkSecondary: "#151d28",
+        skeleton: "#ccc",
+        skeletonDark: "#6b6b6b",
       },
     },
   },

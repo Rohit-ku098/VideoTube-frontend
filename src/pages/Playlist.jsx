@@ -12,6 +12,7 @@ import VideoContainer from "../components/Video/VideoContainer";
 import VideoCard from "../components/Video/VideoCard";
 import Loader from "../components/Loader";
 import { useSelector } from "react-redux";
+import PlaylistPageSkeleton from "../components/Playlist/PlaylistPageSkeleton";
 
 function Playlist({ wraped }) {
   const { playlistId } = useParams();
@@ -56,10 +57,10 @@ function Playlist({ wraped }) {
     removeVideoFromPlaylist(videoId, playlistId)
   }
   console.log(playlist)
-  if(loading) return <Loader/>
+  if(loading) return <PlaylistPageSkeleton/>
   return (
-    <div className="p-6 flex justify-center">
-      <div className="flex justify-start flex-col md:flex-row">
+    <div className="w-full p-6 flex justify-center">
+      <div className="lg:max-w-[70%] flex justify-start flex-col md:flex-row">
         <div className="min-w-80 border dark:border-gray-800 flex justify-center bg-gray-300 dark:bg-bgDarkSecondary rounded-xl">
           {/* playlist info */}
           <div

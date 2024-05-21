@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom'
 import Navbar from './Navigation/Navbar';
 import Aside from './Navigation/Aside';
 import { useSelector } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 
 function Layout() { 
   const { isMenuOpen } = useSelector((state) => state.navbar);
@@ -18,6 +19,7 @@ function Layout() {
       >
         <Aside />
         <Outlet />
+        <ToastContainer />
       </main>
     </div>
   );

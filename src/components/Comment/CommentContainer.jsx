@@ -6,6 +6,8 @@ import Input from '../Input'
 import { api } from "../../services/conf";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import CommentSkeleton from "./CommentSkeleton";
+import CommentContainerSkeleton from "./CommentContainerSkeleton";
 
 const CommentContainer = ({ video }) => {
   const [comments, setComments] = useState([]);
@@ -30,6 +32,10 @@ const CommentContainer = ({ video }) => {
     });
   }
 
+  if(comments.length === 0) return (
+    <CommentContainerSkeleton/>
+  )
+  
   return (
     <div className="m-2 border dark:border-gray-800 p-2 rounded-lg bg-white dark:bg-bgDarkSecondary">
       <div className=" text-lg font-bold">
@@ -71,6 +77,7 @@ const CommentContainer = ({ video }) => {
       <div>
         {comments?.map((comment) => (
           <Comment comment={comment} key={comment?._id} video={video}/>
+          // <CommentSkeleton/>
         ))}
       </div>
     </div>

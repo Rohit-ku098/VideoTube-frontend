@@ -51,7 +51,7 @@ function LikeBtn({ likeTo, ContentId, type="regular" }) {
     }
   }, []);
 
-  const btnSolid = " text-sm w-24 md:w-28 text-center px-4 py-1.5 cursor-pointer text-white bg-[#070707] hover:bg-[#353434] dark:bg-gray-200 dark:hover:bg-gray-300 dark:text-black rounded-2xl"
+  const btnSolid = " text-sm w-24 md:w-28 text-center px-4 py-1 cursor-pointer text-white bg-[#070707] hover:bg-[#353434] dark:bg-gray-200 dark:hover:bg-gray-300 dark:text-black rounded-2xl"
   const btnRegular =
     " text-lg text-center  py-1.5 cursor-pointer rounded-2xl";
 

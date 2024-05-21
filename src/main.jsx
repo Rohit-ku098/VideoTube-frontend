@@ -16,7 +16,6 @@ import Video from "./pages/Video.jsx";
 import ChannelVideos from "./components/Video/ChannelVideos.jsx";
 import UploadVideo from "./components/Video/UploadVideo.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
-import ToastProvider from "./context/ToastProvider.jsx";
 import Profile from "./pages/Profile.jsx";
 import PlaylistFeed from "./pages/PlaylistFeed.jsx";
 import Playlist from "./pages/Playlist.jsx";
@@ -24,6 +23,7 @@ import ThemeProvider from "./context/Theme/ThemeProvider.jsx";
 import WatchHistory from "./pages/WatchHistory.jsx";
 import Blog from "./pages/Blog.jsx";
 import ChannelBlog from "./components/Blog/ChannelBlog.jsx";
+import ToastProvider from "./components/Toast/ToastProvider.jsx";
 
 const router = createBrowserRouter([
   {
@@ -158,11 +158,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   //<React.StrictMode>
     <Provider store={store}>
       <ThemeProvider>
-        <ToastProvider>
-          <RouterProvider router={router}>
-            <App />
-          </RouterProvider>
-        </ToastProvider>
+        <RouterProvider router={router}>
+          <App />
+          <ToastProvider/>
+        </RouterProvider>
       </ThemeProvider>
     </Provider>
   //</React.StrictMode>

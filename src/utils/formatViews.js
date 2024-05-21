@@ -2,11 +2,11 @@ function formatViews(views) {
   if (views < 1000) {
     return views.toString();
   } else if (views < 1000000) {
-    return views / 1000 + "K";
+    return (views / 1000).toFixed(1) + "K";
   } else if (views < 1000000000) {
-    return views / 1000000 + "M";
+    return (views / 1000000).toFixed(1) + "M";
   } else {
-    return views / 1000000000 + "B";
+    return (views / 1000000000).toFixed(1) + "B";
   }
 }
 

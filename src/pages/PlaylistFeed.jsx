@@ -47,7 +47,7 @@ function PlaylistFeed({createPlaylistOption = false}) {
   }, [userName])
 
   console.log('playlists feed rendered')
-  if(loading) return <Loader/>
+  // if(loading) return <Loader/>
   return (
     <div className=" px-4 relative w-full">
       {createPlaylistOption && (
@@ -71,7 +71,7 @@ function PlaylistFeed({createPlaylistOption = false}) {
       <div
         className={`${
           createPlaylistOption ? "pt-16" : ""
-        } grid place-content-center auto-cols-1 sm:grid-cols-2 md:grid-cols-3  xl:grid-cols-4  2xl:grid-cols-5  content-stretch`}
+        } grid place-items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3  xl:grid-cols-4  2xl:grid-cols-5  content-stretch`}
       >
         {playlists?.map((playlist) => (
           <PlaylistCard key={playlist?._id} playlistId={playlist?._id} />

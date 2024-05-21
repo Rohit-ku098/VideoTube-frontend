@@ -12,7 +12,7 @@ import Dropdown from "../Dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../Modal";
 import { deleteTweet, updateTweet } from "../../services/tweet.service";
-import { useToast } from "../../context/toastContext";
+import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Input from "../Input";
@@ -31,7 +31,7 @@ const TweetCard = ({ tweet }) => {
   const [isEdited, setIsEdited] = useState(false);
   const dropdownRef = useRef(null);
   const { user } = useSelector((state) => state.user);
-  const toast = useToast();
+
 
   const {
     handleSubmit,
@@ -65,7 +65,9 @@ const TweetCard = ({ tweet }) => {
       .then(() => {
         setIsDeleteOpen(false);
         dispatch(deleteTweetPost(tweet?._id));
-        toast.open("Blog deleted successfully");
+        toast.error ("Blog deleted successfully", {
+          position: 'bottom-left',          
+        });
       })
       .catch((err) => {
         console.error(err);

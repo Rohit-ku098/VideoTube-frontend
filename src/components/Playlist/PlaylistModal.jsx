@@ -4,7 +4,7 @@ import { getUserPlaylist, addVideoToPlaylist, createPlaylist, removeVideoFromPla
 import { useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { useToast } from '../../context/toastContext'
+import { toast } from 'react-toastify'
 import { useForm } from 'react-hook-form'
 import Input from '../Input'
 
@@ -13,7 +13,6 @@ function PlaylistModal({videoId, setShowModal}) {
     const [playlists, setPlaylists] = useState([])
    
     const {user} = useSelector(state => state.user)
-    const toast = useToast();
     const [openInputBox, setOpenInputBox] = useState(false)
     const { register, handleSubmit } = useForm()
 
@@ -33,13 +32,17 @@ function PlaylistModal({videoId, setShowModal}) {
     const handleAddVideoToPlaylist = async (playlist) => {
         console.log('add video to playlist')
         await addVideoToPlaylist(videoId, playlist?._id)
-        toast.open(`Video added to ${playlist.name}`)
+        toast.success(`Video added to ${playlist.name}`, {
+          position: "bottom-left"
+        })
     }
 
     const handleRemoveVideoFromPlaylist  = async (playlist) => {
         console.log('remove video from playlist')
         await removeVideoFromPlaylist(videoId, playlist?._id)
-        toast.open(`Video removed from ${playlist.name}`)
+        toast.error(`Video removed from ${playlist.name}`, {
+          position: "bottom-left"
+        })
     }
 
     console.log(playlists)
