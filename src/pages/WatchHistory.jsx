@@ -52,7 +52,7 @@ function WatchHistory() {
       await clearWatchHistory();
       setHistoryVideos([]);
       setLoading(false);
-      toast.info("Watch history cleared successfully", {
+      toast.error("Watch history cleared successfully", {
         position: "bottom-left",
       });
     } catch (error) {

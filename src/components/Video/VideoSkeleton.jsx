@@ -1,15 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEllipsisVertical,
-  faListUl,
-} from "@fortawesome/free-solid-svg-icons";
-import Dropdown from "../Dropdown";
-import { formatViews } from "../../utils/formatViews";
-import { getAge } from "../../utils/getAge";
-import { formatVideoDuration } from "../../utils/formatVideoDuration";
-import PlaylistModal from "../Playlist/PlaylistModal";
+import React from "react";
 
 function VideoSkeleton({ wraped = false }) {
  

@@ -2,7 +2,7 @@ import { api } from "./conf";
 const getAllVideos = async (params) => {
     try {
         const response = await api.get("/videos", { params: params });
-        return response.data?.data?.videos;
+        return response.data?.data;
     } catch (error) {
         console.log(error);
     }

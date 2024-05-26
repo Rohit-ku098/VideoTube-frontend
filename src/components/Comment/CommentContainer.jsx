@@ -11,6 +11,7 @@ import CommentContainerSkeleton from "./CommentContainerSkeleton";
 
 const CommentContainer = ({ video }) => {
   const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(false);
     const { register, handleSubmit, setValue, getValues, formState:{isDirty} } = useForm({
     defaultValues: {
       content: "",
@@ -19,11 +20,15 @@ const CommentContainer = ({ video }) => {
     const {isLoggedIn} = useSelector(state => state.user)
 
   useEffect(() => {
+    setLoading(true)
     getVideoComments(video?._id).then((comments) => {
       setComments(comments);
-    });
+      setLoading(false)
+    }).catch((error) => {
+      console.log(error);
+      setLoading(false);
+    })
   }, [video?._id]);
-  console.log(comments);
   
   const onSubmit = (data) => {
     addComment(video._id, data).then((res) => {
@@ -32,7 +37,7 @@ const CommentContainer = ({ video }) => {
     });
   }
 
-  if(comments.length === 0) return (
+  if(loading) return (
     <CommentContainerSkeleton/>
   )
   
