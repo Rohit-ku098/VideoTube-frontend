@@ -27,8 +27,8 @@ function PlaylistCard({ playlistId, wraped = false, threeDotsVisible = false }) 
 
   const [loading, setLoading] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
-    useState(false);
+  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
   const [playlist, setPlaylist] = useState({});
 
   useEffect(() => {
@@ -52,19 +52,30 @@ function PlaylistCard({ playlistId, wraped = false, threeDotsVisible = false }) 
   }, []);
 
   const handleDeletePlaylist = () => {
-    deletePlaylist(playlistId);
-    setIsDeleteConfirmationOpen(false);
-    dispatch(
-      setUserPlaylists(
-        userPlaylists?.filter((playlist) => playlist._id !== playlistId)
-      )
-    );
-    toast.error("Playlist deleted successfully", {
-      position: "bottom-left",
-    });
+    deletePlaylist(playlistId).then(() => {
+      setIsDeleteConfirmationOpen(false);
+      dispatch(
+        setUserPlaylists(
+          userPlaylists?.filter((playlist) => playlist._id !== playlistId)
+        )
+      );
+      
+      toast.error("Playlist deleted successfully", {
+        position: "bottom-left",
+      });
+
+      setIsDeleted(true);
+    }).catch((error) => {
+      console.error(error);
+      toast.error(error?.message || "Something went wrong", {
+        position: "bottom-left",
+      });
+    })
   };
 
   if (loading) return <PlaylistCardSkeleton wraped={wraped} />;
+  if(isDeleted) return null;
+
   return (
     <div
       className={`p-2 cursor-pointer w-full  ${

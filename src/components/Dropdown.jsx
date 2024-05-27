@@ -21,7 +21,7 @@ const Dropdown = React.forwardRef(function Dropdown(
       <ul className="min-w-48 me-4 bg-white dark:bg-backgroundDark shadow-md absolute -right-2 border-2 dark:border-gray-800 rounded-lg">
         {options.map((item, i) =>
           item.path ? (
-            <Link to={item.path} key={i} target={item?.target}>
+            <Link to={item.path} key={i} target={item?.target} state={item?.state}>
               <li
                 ref={ref}
                 title={item.title}

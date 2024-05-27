@@ -15,16 +15,22 @@ const ChannelVideos = () => {
     const userId = location?.state?.userId
 
     useEffect(() => {
-        setLoading(true);
+
         const params = {};
         params.userId = userId;
         params.page = page;
         params.limit = 10
-        getAllVideos(params).then((data) => {
-            setVideos(prev => [...prev, ...data.videos]);
-            setTotalVideosCount(data.count)
-            setLoading(false);
-        }).catch((err) => console.log(err));
+        if(userId) {
+          setLoading(true);
+          getAllVideos(params)
+            .then((data) => {
+              setVideos((prev) => [...prev, ...data.videos]);
+              setTotalVideosCount(data.count);
+              setLoading(false);
+            })
+            .catch((err) => console.log(err));
+        }
+        
     }, [userId, page]);
 
  

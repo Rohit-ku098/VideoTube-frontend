@@ -44,8 +44,8 @@ function App() {
     <Loader />
   ) : (
     <div>
-      <Outlet />;
-      <ToastContainer draggable draggablePercent={60} />
+      <Outlet />
+      <ToastContainer draggable draggablePercent={60} autoClose={3000} />
     </div>
   ); 
 }

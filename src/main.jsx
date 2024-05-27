@@ -23,7 +23,10 @@ import ThemeProvider from "./context/Theme/ThemeProvider.jsx";
 import WatchHistory from "./pages/WatchHistory.jsx";
 import Blog from "./pages/Blog.jsx";
 import ChannelBlog from "./components/Blog/ChannelBlog.jsx";
-import Dashboard, { DashboardPlaylist, DashboardVideos } from "./pages/Dashboard.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import DashboardVideos from "./components/Dashboard/DashboardVideo.jsx";
+import DashboardPlaylist from "./components/Dashboard/DashboardPlaylist.jsx";
+import EditVideo from "./components/Video/EditVideo.jsx";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +63,14 @@ const router = createBrowserRouter([
             ),
           },
           {
+            path: "/video/edit",
+            element: (
+              <AuthLayout>
+                <EditVideo/>
+              </AuthLayout>
+            )
+          },
+          {
             path: "/search",
             element: (
               <AuthLayout authentication={true}>
@@ -76,7 +87,7 @@ const router = createBrowserRouter([
             ),
             children: [
               {
-                path: "/channel/:userName",
+                path: "/channel/:userName/",
                 element: (
                   <AuthLayout>
                     <ChannelVideos />

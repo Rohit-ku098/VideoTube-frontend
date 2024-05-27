@@ -25,6 +25,7 @@ import SubscribeBtn from '../components/SubscribeBtn'
 import LikeBtn from '../components/LikeBtn'
 import VideoSkeleton from '../components/Video/VideoSkeleton'
 import VideoPageSkeleton from '../components/Video/VideoPageSkeleton'
+import { toast } from 'react-toastify'
 
 function Video() {
      const { videoId } = useParams();
@@ -92,8 +93,8 @@ function Video() {
       setLoading(true)
       getVideoById(videoId).then((data) => {
         setVideo(data);
-        setDate(getAge(data.createdAt));
-        setViews(formatViews(data.views));
+        setDate(getAge(data?.createdAt));
+        setViews(formatViews(data?.views));
         setTotalSubscribers(data?.owner?.subscribers)
         getSubscriptionStatus(data?.owner?._id).then((data) =>{
           setIsSubscribed(data?.isSubscribed)
@@ -102,6 +103,10 @@ function Video() {
       })
       .catch(err => {
         console.error(err)
+        setLoading(false);
+        toast.error(err?.message || "Something went wrong", {
+          position: "bottom-left",
+        });
       });
 
        getAllVideos({}).then((data) => {
