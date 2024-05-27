@@ -10,7 +10,7 @@ function Layout() {
   return (
     <div>
       <header>
-        <Navbar />
+        <Navbar searchBar={true}/>
       </header>
       <main
         className={`mt-[4.7rem] lg:ml-16 ${
@@ -19,7 +19,6 @@ function Layout() {
       >
         <Aside />
         <Outlet />
-        <ToastContainer />
       </main>
     </div>
   );

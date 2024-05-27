@@ -7,6 +7,8 @@ import { Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "./store/userSlice";
 import Loader from "./components/Loader";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 
@@ -38,7 +40,14 @@ function App() {
     getCurrentUser();
   }, []);
 
-  return loading ? <Loader /> : <Outlet />;
+  return loading ? (
+    <Loader />
+  ) : (
+    <div>
+      <Outlet />;
+      <ToastContainer draggable draggablePercent={60} />
+    </div>
+  ); 
 }
 
 export default App;

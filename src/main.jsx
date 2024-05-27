@@ -23,7 +23,7 @@ import ThemeProvider from "./context/Theme/ThemeProvider.jsx";
 import WatchHistory from "./pages/WatchHistory.jsx";
 import Blog from "./pages/Blog.jsx";
 import ChannelBlog from "./components/Blog/ChannelBlog.jsx";
-import ToastProvider from "./components/Toast/ToastProvider.jsx";
+import Dashboard, { DashboardPlaylist, DashboardVideos } from "./pages/Dashboard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -76,7 +76,7 @@ const router = createBrowserRouter([
             ),
             children: [
               {
-                path: "/channel/:userName/videos",
+                path: "/channel/:userName",
                 element: (
                   <AuthLayout>
                     <ChannelVideos />
@@ -95,10 +95,10 @@ const router = createBrowserRouter([
                 path: "/channel/:userName/blogs",
                 element: (
                   <AuthLayout authentication={true}>
-                    <ChannelBlog/>
+                    <ChannelBlog />
                   </AuthLayout>
-                )
-              }
+                ),
+              },
             ],
           },
           {
@@ -129,10 +129,10 @@ const router = createBrowserRouter([
             path: "/blog",
             element: (
               <AuthLayout authentication={true}>
-                <Blog/>
+                <Blog />
               </AuthLayout>
-            )
-          }
+            ),
+          },
         ],
       },
       {
@@ -151,18 +151,51 @@ const router = createBrowserRouter([
           </AuthLayout>
         ),
       },
+      {
+        path: "/dashboard",
+        element: (
+          <AuthLayout authentication={true}>
+            <Dashboard />
+          </AuthLayout>
+        ),
+        children: [
+          {
+            path: "/dashboard",
+            element: (
+              <AuthLayout authentication={true}>
+                <DashboardVideos />
+              </AuthLayout>
+            ),
+          },
+          {
+            path: "/dashboard/blogs",
+            element: (
+              <AuthLayout authentication={true}>
+                <ChannelBlog/>
+              </AuthLayout>
+            ),
+          },
+          {
+            path: "/dashboard/playlists",
+            element:( 
+              <AuthLayout authentication={true}>
+                <DashboardPlaylist />
+              </AuthLayout>
+            ),
+          }
+        ],
+      },
     ],
   },
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
   //<React.StrictMode>
-    <Provider store={store}>
-      <ThemeProvider>
-        <RouterProvider router={router}>
-          <App />
-          <ToastProvider/>
-        </RouterProvider>
-      </ThemeProvider>
-    </Provider>
+  <Provider store={store}>
+    <ThemeProvider>
+      <RouterProvider router={router}>
+        <App />
+      </RouterProvider>
+    </ThemeProvider>
+  </Provider>
   //</React.StrictMode>
 );

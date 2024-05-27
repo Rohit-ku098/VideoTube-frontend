@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import VideoContainer from '../components/Video/VideoContainer'
 import { useSelector, useDispatch } from 'react-redux';
-import Test from '../components/Test';
 
 function Home() {
   const dispatch = useDispatch()

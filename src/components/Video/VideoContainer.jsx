@@ -23,8 +23,9 @@ function VideoContainer () {
      params.userId = searchParams.get("user");
      console.log(params); 
      getAllVideos(params).then((data) => {
+      console.log(data)
        setVideos((prev) => [...prev, ...data.videos]);
-       setTotalVideosCount(data.count);
+       setTotalVideosCount(data?.count);
        setLoading(false);
      }).catch((err) => console.log(err));
 

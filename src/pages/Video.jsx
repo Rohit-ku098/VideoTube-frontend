@@ -105,7 +105,7 @@ function Video() {
       });
 
        getAllVideos({}).then((data) => {
-         setSuggestedVideo(data);
+         setSuggestedVideo(data.videos);
        });
 
        getVideoLikeInfo(videoId).then((data) => {

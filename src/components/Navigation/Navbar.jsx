@@ -6,12 +6,13 @@ import {
   faTimes,
   faUser,
   faPalette,
+  faGauge,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../../store/navbarSlice";
 import { logout } from "../../store/userSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../services/user.service";
 
 import Dropdown from "../Dropdown";
@@ -21,7 +22,7 @@ import Modal from "../Modal";
 import Loader from "../Loader";
 import Appearance from "../Appearance";
 
-const Navbar = () => {
+const Navbar = ({searchBar, menubar=true}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const { isLoggedIn, user } = useSelector((state) => state.user);
@@ -85,6 +86,12 @@ const Navbar = () => {
       icon: faUser,
     },
     {
+      title: "Dashboard",
+      path: `/dashboard`,
+      icon: faGauge,
+      target: "_blank",
+    },
+    {
       title: "Appearance",
       onClick: handleAppearanceOpen,
       icon: faPalette,
@@ -121,31 +128,34 @@ const Navbar = () => {
     <>
       <nav className="flex justify-between items-center group p-4 z-40 md:px-10 border-b-2 dark:border-gray-800 shadow-sm fixed top-0 w-full bg-white dark:bg-bgDarkSecondary">
         <div className="flex items-center gap-3">
-          <div type="button" className="text-2xl" ref={menuButtonRef}>
-            {isMenuOpen ? (
-              <button type="button">
-                <FontAwesomeIcon icon={faTimes} />
-              </button>
-            ) : (
-              <button type="button">
-                <FontAwesomeIcon icon={faBars} />
-              </button>
-            )}
-          </div>
-          <div className="flex items-center ">
-            <Logo height="45px" width="45px" />
-            <span
-              className={`font-bold text-lg ${
-                isSearchOpen ? "hidden" : "block"
-              } md:block`}
-            >
-              VideoTube
-            </span>
-          </div>
+          {menubar && (
+            <div type="button" className="text-2xl" ref={menuButtonRef}>
+              {isMenuOpen ? (
+                <button type="button">
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              ) : (
+                <button type="button">
+                  <FontAwesomeIcon icon={faBars} />
+                </button>
+              )}
+            </div>
+          )}
+          <Link to={"/"}>
+            <div className="flex items-center ">
+              <Logo height="45px" width="45px" />
+              <span
+                className={`font-bold text-lg ${
+                  isSearchOpen ? "hidden" : "block"
+                } md:block`}
+              >
+                VideoTube
+              </span>
+            </div>
+          </Link>
         </div>
 
-        <Searchbar />
-
+        {searchBar && <Searchbar />}
         <div ref={dropdownRef}>
           <img
             src={`${isLoggedIn ? user?.avatar : "/avatar.png"}`}
@@ -163,12 +173,20 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {isConfirmationPopupOpen && 
-        <Modal title="Log Out" onCancel={handleConfirmationPopup} onConfirm={handleLogout} confirmBtn="Log Out">
+      {isConfirmationPopupOpen && (
+        <Modal
+          title="Log Out"
+          onCancel={handleConfirmationPopup}
+          onConfirm={handleLogout}
+          confirmBtn="Log Out"
+        >
           <p>Are you sure to log out?</p>
-        </Modal>}
+        </Modal>
+      )}
 
-      {isAppearanceOpen && <Appearance setAppearanceOpen={setIsAppearanceOpen}/>}
+      {isAppearanceOpen && (
+        <Appearance setAppearanceOpen={setIsAppearanceOpen} />
+      )}
       {loading && <Loader />}
     </>
   );

@@ -18,7 +18,7 @@ import Modal from "../Modal";
 import { toast } from 'react-toastify'
 import PlaylistCardSkeleton from "./PlaylistCardSkeleton";
 
-function PlaylistCard({ playlistId, wraped = false }) {
+function PlaylistCard({ playlistId, wraped = false, threeDotsVisible = false }) {
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -32,7 +32,7 @@ function PlaylistCard({ playlistId, wraped = false }) {
   const [playlist, setPlaylist] = useState({});
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getPlaylistById(playlistId).then((res) => {
       setPlaylist(res);
       setLoading(false);
@@ -59,41 +59,39 @@ function PlaylistCard({ playlistId, wraped = false }) {
         userPlaylists?.filter((playlist) => playlist._id !== playlistId)
       )
     );
-    toast.error("Playlist deleted successfully",{
-      position: 'bottom-left'
+    toast.error("Playlist deleted successfully", {
+      position: "bottom-left",
     });
   };
 
-  if(loading) return <PlaylistCardSkeleton/>
+  if (loading) return <PlaylistCardSkeleton wraped={wraped} />;
   return (
     <div
       className={`p-2 cursor-pointer w-full  ${
         wraped ? " w-full" : "max-w-96 "
       }  group/video`}
     >
-      <div className={`flex ${wraped ? "flex-row " : "flex-col"}`}>
+      <div className={`flex ${wraped ? "flex-row items-center" : "flex-col"}`}>
         <Link to={`/playlist/${playlist?._id}`} className="relative">
           <div
-            className={` ${
-              wraped ? "w-52" : "max-h-56 w-full"
+            className={`w-full ${
+              wraped ? "max-w-52" : "max-h-56 w-full"
             }  aspect-video relative flex justify-center items-center bg-black dark:bg-[#3d3d4e72] rounded-md shadow-[-4px_-4px]  shadow-gray-500 dark:shadow-gray-700`}
           >
             {/* Thumbnail */}
             <img
-              src={playlist?.videos?.at(0)?.thumbnail }
+              src={playlist?.videos?.at(0)?.thumbnail}
               alt=""
               className="max-w-full  max-h-full rounded-md"
             />
             {/* Total videos in playlist */}
             {
               <p className="m-2 p-0.5 text-xs bg-black bg-opacity-50 text-white absolute bottom-0 right-0">
-                {
-                Object.keys(playlist).length > 0 ?
-                playlist?.videos?.length > 1
-                  ? `${playlist?.videos?.length} videos`
-                  : `${playlist?.videos?.length} video`
-                : "No videos"
-                }
+                {Object.keys(playlist).length > 0
+                  ? playlist?.videos?.length > 1
+                    ? `${playlist?.videos?.length} videos`
+                    : `${playlist?.videos?.length} video`
+                  : "No videos"}
               </p>
             }
           </div>
@@ -124,9 +122,13 @@ function PlaylistCard({ playlistId, wraped = false }) {
               {/* 3dot */}
               <FontAwesomeIcon
                 icon={faEllipsisVertical}
-                className={`m-2 cursor-pointer ${
-                  isDropdownOpen ? "visible" : "invisible"
-                } group-hover/video:visible`}
+                className={`m-2 cursor-pointer  ${
+                  isDropdownOpen ? "visible" : ""
+                } ${
+                  threeDotsVisible
+                    ? "visible"
+                    : "group-hover/video:visible invisible"
+                }`}
               />
               {isDropdownOpen && (
                 <Dropdown

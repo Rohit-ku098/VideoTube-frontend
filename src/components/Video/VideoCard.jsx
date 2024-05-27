@@ -14,6 +14,7 @@ import PlaylistModal from '../Playlist/PlaylistModal';
 function VideoCard({
   video,
   wraped = false,
+  threeDotsVisible = false,
   optionsToDropdown = [],
 }) {
   const dropdownRef = useRef(null);
@@ -92,10 +93,10 @@ function VideoCard({
                 wraped ? "line-clamp-1" : "line-clamp-2"
               }`}
             >
-              {video?.title || "This is title"} {/*title*/}
+              {video?.title || video?.createdAt} {/*title*/}
             </p>
             <p className="text-sm text-slate-500 dark:text-slate-300">
-              {video?.owner?.fullName || "channel"} {/* channel name */}
+              {video?.owner?.fullName} {/* channel name */}
             </p>
             <div className="flex gap-1 text-sm text-slate-500 dark:text-slate-300">
               <p>{views || 0} views</p> {/*views */}
@@ -111,9 +112,13 @@ function VideoCard({
             >
               <FontAwesomeIcon
                 icon={faEllipsisVertical}
-                className={`m-2 cursor-pointer ${
-                  isDropdownOpen ? "visible" : "invisible"
-                } group-hover/video:visible`}
+                className={`m-2 cursor-pointer  ${
+                  isDropdownOpen ? "visible" : ""
+                } ${
+                  threeDotsVisible
+                    ? "visible"
+                    : "group-hover/video:visible invisible"
+                }`}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               />
             </button>

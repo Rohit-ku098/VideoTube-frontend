@@ -104,7 +104,7 @@ function Profile() {
       </section>
       <section>
         <div className="w-full border-b-2 border-black dark:border-white/95 p-2 mb-4 flex items-center justify-start gap-6 font-medium">
-          <NavLink
+          {/* <NavLink
             to={`/channel/${channelData?.userName}`}
             state={{ userId: channelData?._id }}
             end
@@ -112,9 +112,9 @@ function Profile() {
               cursor-pointer`}
           >
             Home
-          </NavLink>
+          </NavLink> */}
           <NavLink
-            to={`/channel/${channelData?.userName}/videos`}
+            to={`/channel/${channelData?.userName}`}
             state={{ userId: channelData?._id }}
             end
             className={({ isActive }) => `${isActive ? " font-bold" : ""}  

@@ -59,11 +59,11 @@ function Aside() {
             >
               <NavItem to="/" icon={faHome} label="Home" />
               <NavItem to="/blog" icon={faBlog} label="Blog" />
-              <NavItem
+              {/* <NavItem
                 to="/subscriptions"
                 icon={faUser}
                 label="Subscriptions"
-              />
+              /> */}
               <NavItem to="/history" icon={faHistory} label="History" />
               <NavItem
                 to={`/playlist/feed/${user?._id}`}
@@ -90,11 +90,11 @@ function Aside() {
             >
               <NavItem to="/" icon={faHome} label="Home" />
               <NavItem to="/blog" icon={faBlog} label="Blog" />
-              <NavItem
+              {/* <NavItem
                 to="/subscriptions"
                 icon={faUser}
                 label="Subscriptions"
-              />
+              /> */}
               <NavItem to="/history" icon={faHistory} label="History" />
               <NavItem
                 to={`/playlist/feed/${user?._id}`}
