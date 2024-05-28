@@ -93,7 +93,7 @@ function Video() {
       setLoading(true)
       getVideoById(videoId).then((data) => {
         setVideo(data);
-        setDate(getAge(data?.createdAt));
+        setDate(getAge(data?.createdAt) + " ago");
         setViews(formatViews(data?.views));
         setTotalSubscribers(data?.owner?.subscribers)
         getSubscriptionStatus(data?.owner?._id).then((data) =>{
@@ -120,6 +120,17 @@ function Video() {
 
 
      }, [videoId]);
+
+     useEffect(() => {
+       if (descriptionOpen) {
+          const newDate = new Date(video?.createdAt);
+          const formattedDate = newDate.toDateString();
+          setDate(formattedDate.split(" ").slice(1).join(" "));
+        }
+        else {
+           setDate(getAge(video?.createdAt) + " ago");
+        }
+     }, [descriptionOpen])
      
     //  useEffect(() => {
     //   if(video && user){
@@ -202,7 +213,7 @@ function Video() {
           <div className="flex gap-5 items-center font-semibold">
             {/* views and date */}
             <p>{views}&nbsp;views</p>
-            <p>{date}&nbsp;ago</p>
+            <p>{date}</p>
           </div>
           <div>
             <pre

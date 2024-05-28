@@ -27,6 +27,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import DashboardVideos from "./components/Dashboard/DashboardVideo.jsx";
 import DashboardPlaylist from "./components/Dashboard/DashboardPlaylist.jsx";
 import EditVideo from "./components/Video/EditVideo.jsx";
+import Setting from "./pages/Setting.jsx";
 
 const router = createBrowserRouter([
   {
@@ -144,6 +145,14 @@ const router = createBrowserRouter([
               </AuthLayout>
             ),
           },
+          {
+            path: "/setting",
+            element: (
+              <AuthLayout>
+                <Setting/>
+              </AuthLayout>
+            )
+          }
         ],
       },
       {

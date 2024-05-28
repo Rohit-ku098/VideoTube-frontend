@@ -48,10 +48,58 @@ const removeVideoFromWatchHistory = async (videoId) => {
     throw error;
   }
 };
+
+const updateUserAvatar = async (data) => {
+  try {
+    const res = await api.patch("/users/update-avatar", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return res.data?.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updateCoverImage = async (data) => {
+  try {
+    const res = await api.patch("users/update-cover-image", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return res.data?.data
+  } catch (error) {
+    throw error
+  }
+}
+const updateAccountDetails = async (data) => {
+  try {
+    const res = await api.patch("users/update-account", data);
+    return res.data?.data
+  } catch (error) {
+    throw error
+  }
+}
+
+const changePassword = async (data) => {
+  try {
+    const res = await api.post("users/change-password", data);
+    return res.data?.data
+  } catch (error) {
+    throw error
+  }
+}
+
 export {
   logoutUser,
   getUserChannelProfile,
   getUserWatchHistory,
   clearWatchHistory,
   removeVideoFromWatchHistory,
+  updateUserAvatar,
+  updateCoverImage,
+  updateAccountDetails,
+  changePassword
 };

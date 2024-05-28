@@ -217,7 +217,6 @@ const Comment = ({ comment, video }) => {
                   : [
                       {
                         title: "Report",
-                        path: `/reportComment/${comment?._id}`,
                         icon: faFlag,
                       },
                     ]

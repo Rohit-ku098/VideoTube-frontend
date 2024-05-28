@@ -44,6 +44,15 @@ function Login() {
     }
   }
 
+  function validatePassword(password) {
+    const passwordPattern =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return (
+      passwordPattern.test(password) ||
+      "Password must be at least 8 characters long and contain at least one letter, one number, and one special character"
+    );
+  }
+
   return (
     <section>
       <div className="flex items-center justify-center  px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
@@ -132,6 +141,7 @@ function Login() {
                     value: true,
                     message: "Password is required",
                   },
+                  validate: validatePassword
                 })}
               />
               {errors.password && (

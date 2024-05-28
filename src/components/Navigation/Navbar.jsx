@@ -97,6 +97,11 @@ const Navbar = ({searchBar, menubar=true}) => {
       icon: faPalette,
     },
     {
+      title: "Setting",
+      path: "/setting",
+      icon: faCog,
+    },
+    {
       title: "Log Out",
       icon: faUser,
       onClick: handleConfirmationPopup,
