@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setTweets } from "../store/tweetSlice";
 import { useForm } from "react-hook-form";
 import { addTweet } from "../store/tweetSlice";
+import { toast } from "react-toastify";
 function Blog() {
   const dispatch = useDispatch();
   const [openCreateTweet, setOpenCreateTweet] = useState(false);
@@ -20,11 +21,12 @@ function Blog() {
     getAllTweets(params)
       .then((res) => {
         dispatch(setTweets(res));
-        setLoading(false);
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch((error) => {
+        toast.error(error, {
+          position: "bottom-left",
+        });
+      }).finally(() => setLoading(false));
   }, []);
 
 
@@ -48,7 +50,9 @@ function Blog() {
              setOpenCreateTweet(false)
             })
            .catch((error) => {
-             console.error(error);
+             toast.error(error, {
+               position: "bottom-left",
+             });
            });
        
      };

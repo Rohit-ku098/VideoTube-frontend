@@ -24,8 +24,10 @@ function PlaylistFeed({createPlaylistOption = false}) {
       dispatch(setUserPlaylists(res));
       setLoading(false)
     })
-    .catch(err => {
-      console.log(err);
+    .catch(error => {
+      toast.error(error, {
+        position: "bottom-left",
+      });
       setLoading(false)
     })
   }, [userId])
@@ -38,10 +40,12 @@ function PlaylistFeed({createPlaylistOption = false}) {
     getChannelPlaylists(userName)
     .then(res => {
       setPlaylists(res);
-      setLoading(false)
     })
-    .catch(err => {
-      console.log(err);
+    .catch(error => {
+      toast.error(error, {
+        position: "bottom-left",
+      });
+    }).finally(() => {
       setLoading(false)
     })
   }, [userName])
@@ -87,6 +91,7 @@ import Modal from "../components/Modal";
 import Input from "../components/Input";
 import { createPlaylist } from '../services/playlist.service';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 function CreatePlaylistModal({setOpen}) {
   const dispatch = useDispatch()
@@ -100,6 +105,9 @@ function CreatePlaylistModal({setOpen}) {
       setOpen(false);
       console.log("plalist created");
     } catch (error) {
+      toast.error(error, {
+        position: "bottom-left",
+      });
       console.log(error); 
     }
   }

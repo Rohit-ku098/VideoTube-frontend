@@ -9,7 +9,7 @@ const logoutUser = async () => {
       return res.data;
     }
   } catch (error) {
-    console.log(error);
+    throw error.response.data.message;
   }
 };
 
@@ -18,7 +18,7 @@ const getUserChannelProfile = async (userName) => {
     const res = await api.get(`/users/c/${userName}`);
     return res.data?.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message;
   }
 };
 
@@ -27,7 +27,7 @@ const getUserWatchHistory = async () => {
     const res = await api.get(`/users/watch-history`);
     return res.data?.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message;
   }
 };
 
@@ -36,7 +36,7 @@ const clearWatchHistory = async () => {
     const res = await api.patch(`/users/watch-history`);
     return res.data?.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message;
   }
 };
 
@@ -45,7 +45,7 @@ const removeVideoFromWatchHistory = async (videoId) => {
     const res = await api.patch(`/users/watch-history/${videoId}`);
     return res.data?.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message;
   }
 };
 
@@ -58,7 +58,7 @@ const updateUserAvatar = async (data) => {
     });
     return res.data?.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message;
   }
 };
 
@@ -71,7 +71,7 @@ const updateCoverImage = async (data) => {
     });
     return res.data?.data
   } catch (error) {
-    throw error
+    throw error.response.data.message;
   }
 }
 const updateAccountDetails = async (data) => {
@@ -79,7 +79,7 @@ const updateAccountDetails = async (data) => {
     const res = await api.patch("users/update-account", data);
     return res.data?.data
   } catch (error) {
-    throw error
+    throw error.response.data.message;
   }
 }
 
@@ -88,7 +88,7 @@ const changePassword = async (data) => {
     const res = await api.post("users/change-password", data);
     return res.data?.data
   } catch (error) {
-    throw error
+    throw error.response.data.message
   }
 }
 

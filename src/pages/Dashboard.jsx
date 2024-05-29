@@ -15,12 +15,15 @@ function Dashboard() {
     getDashboardData()
       .then((data) => {
         setChannelData(data);
-        setLoading(false)
       })
       .catch((error) => {
         console.error(error);
+        toast.error(error, {
+          position: "bottom-left",
+        });
+      }).finally(() => {
         setLoading(false)
-      });
+      })
 
     return () => {
       document.title = "VideoTube";

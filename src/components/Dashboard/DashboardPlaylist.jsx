@@ -3,6 +3,7 @@ import PlaylistCard from "../Playlist/PlaylistCard";
 import { getUserPlaylist } from "../../services/playlist.service";
 import { useLocation } from "react-router-dom";
 import Loader from "../Loader";
+import { toast } from "react-toastify";
 
 
 function DashboardPlaylist() {
@@ -17,12 +18,14 @@ function DashboardPlaylist() {
     getUserPlaylist(userId)
       .then((data) => {
         setPlaylists(data);
-        setLoading(false);
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(error, {
+          position: "bottom-left",
+        });
+      }).finally(() => {
         setLoading(false);
-      });
+      })
   }, [userId]);
 
   if (loading) return <Loader />;

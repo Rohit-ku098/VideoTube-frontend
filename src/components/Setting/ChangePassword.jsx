@@ -4,6 +4,7 @@ import Modal from "../Modal";
 import { changePassword } from "../../services/user.service";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import useErrorMessage from "../../hooks/useErrorMessage";
 
 function ChangePassword({ setOpenModal }) {
   const {
@@ -28,7 +29,7 @@ function ChangePassword({ setOpenModal }) {
         });
       })
       .catch((error) => {
-        toast.error(error?.response?.data?.toString(), {
+        toast.error(error, {
           position: "bottom-left",
         });
       })

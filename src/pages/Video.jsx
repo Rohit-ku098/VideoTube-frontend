@@ -96,26 +96,40 @@ function Video() {
         setDate(getAge(data?.createdAt) + " ago");
         setViews(formatViews(data?.views));
         setTotalSubscribers(data?.owner?.subscribers)
-        getSubscriptionStatus(data?.owner?._id).then((data) =>{
-          setIsSubscribed(data?.isSubscribed)
-          setLoading(false)
-        });
+        if(user?._id !== data?.owner?._id) {
+          getSubscriptionStatus(data?.owner?._id)
+            .then((data) => {
+              setIsSubscribed(data?.isSubscribed);
+              setLoading(false);
+            })
+            .catch((error) => {
+              setLoading(false);
+            });
+        } else {
+          setLoading(false);
+        }
       })
-      .catch(err => {
+      .catch(error => {
         console.error(err)
         setLoading(false);
-        toast.error(err?.message || "Something went wrong", {
+        toast.error(error, {
           position: "bottom-left",
         });
       });
 
        getAllVideos({}).then((data) => {
          setSuggestedVideo(data.videos);
-       });
+       }).catch(error => {
+          toast.error(error, {
+            position: "bottom-left",
+          });
+       })
 
        getVideoLikeInfo(videoId).then((data) => {
         setLiked(data.isLiked)
         setTotalLike(data.totalLike)
+       }).catch((error) => {
+         console.log(error)
        })
 
 

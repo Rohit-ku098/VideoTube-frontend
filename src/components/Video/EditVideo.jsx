@@ -70,7 +70,7 @@ const EditVideo = ({ videoId }) => {
       });
       return response.data?.data;
     } catch (error) {
-      throw error
+      throw error.response.data?.message
     }
   };
 
@@ -97,18 +97,17 @@ const EditVideo = ({ videoId }) => {
 
     setLoading(true);
     editVideo(formData).then((res) => {
-      setLoading(false);
       console.log(res);
       toast.success("Video updated successfully", {
         position: "bottom-left",
       });
       navigate("/dashboard");
     }).catch((error) => {
-        setLoading(false);
-        console.error(error)
-        toast.error(error?.message || "Something went wrong", {
-          position: "bottom-left",
-        });
+      toast.error(error, {
+        position: "bottom-left",
+      });
+    }).finally(() => {
+      setLoading(false);
     })
   };
 

@@ -4,9 +4,8 @@ import { getUserChannelProfile } from "../services/user.service";
 import { useSelector } from "react-redux";
 import SubscribeBtn from "../components/SubscribeBtn";
 import { getSubscriptionStatus, toggleSubscribe } from "../services/subscription.service";
-import VideoContainer from "../components/Video/VideoContainer";
-import { getAllVideos } from "../services/video.service";
 import Loader from "../components/Loader";
+import { toast } from "react-toastify";
 
 function Profile() {
   const { userName } = useParams();
@@ -15,8 +14,6 @@ function Profile() {
   const [totalSubscribers, setTotalSubscribers] = useState(0);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [videoOpen, setVideoOpen] = useState(true);
-  const [playlistOpen, setPlaylistOpen] = useState(false);
 
   const handleSubscribe = async () => {
     setIsSubscribed((prev) => !prev);
@@ -31,7 +28,11 @@ function Profile() {
         setIsSubscribed(data.isSubscribed);
         // console.log(data)
       })
-      .catch((err) => console.log(err));
+      .catch((error) => {
+        toast.error(error, {
+          position: "bottom-left",
+        });
+      });
   };
 
   useEffect(() => {
@@ -40,19 +41,28 @@ function Profile() {
       .then((res) => {
         SetChannelData(res);
         setTotalSubscribers(res?.subscriberCount);
-        getSubscriptionStatus(res?._id)
-        .then((data) => {
-          setIsSubscribed(data.isSubscribed);
+        if(user._id !== res._id){
+          getSubscriptionStatus(res?._id)
+            .then((data) => {
+              setIsSubscribed(data.isSubscribed);
+              setLoading(false);
+            })
+            .catch((error) => {
+              toast.error(error, {
+                position: "bottom-left",
+              });
+              setLoading(false);
+            });
+        } else {
           setLoading(false);
-          })
-          .catch((err) => {
-            console.log(err)
-            setLoading(false);
-          });
+        }
+
         
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        toast.error(error, {
+          position: "bottom-left",
+        });
         setLoading(false);
       });
   }, [userName]);

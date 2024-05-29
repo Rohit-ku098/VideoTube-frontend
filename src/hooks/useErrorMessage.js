@@ -1,7 +1,7 @@
 
 const useErrorMessage = (error='') => {
   // Regular expression to match the error message inside <pre> tag up to <br> tag
-  const errorMessageRegex = /<pre>Error:(.*?)<br>/;
+  const errorMessageRegex = /<pre>(.*?)<br>/;
 
   // Extracting the error message using regex
   const match = error?.match(errorMessageRegex);

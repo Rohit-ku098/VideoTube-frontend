@@ -62,12 +62,17 @@ const Comment = ({ comment, video }) => {
 
   const handleDeleteComment = () => {
     deleteComment(comment?._id).then(() => {
-      setIsDeleteOpen(false);
       setIsDeleted(true);
       toast.error("Comment deleted successfully", {
         position: "bottom-left",
       });
-    });
+    }).catch((error) => {
+      toast.error(error, {
+        position: "bottom-left",
+      });
+    }).finally(() => {
+      setIsDeleteOpen(false);
+    })
   };
 
   const {
@@ -86,9 +91,14 @@ const Comment = ({ comment, video }) => {
     updateComment(comment?._id, data).then((res) => {
       console.log("comment updated", res?.content);
       setCommentContent(res?.content);
-      setIsEditOpen(false);
       setIsEdited(res?.updatedAt !== res?.createdAt);
-    });
+    }).catch((error) => {
+      toast.error(error, {
+        position: "bottom-left",
+      });
+    }).finally(() => {
+      setIsEditOpen(false);
+    })
   };
 
   const onCancelEdit = () => {

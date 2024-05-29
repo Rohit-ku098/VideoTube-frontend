@@ -5,7 +5,7 @@ const toggleSubscribe = async (channelId) => {
         const res = await api.post(`subscriptions/c/${channelId}`); 
         return res.data?.data;
     } catch (error) {
-        console.log(error)
+        throw error.response.data.message;
     }
 }
 
@@ -15,7 +15,7 @@ const getSubscriptionStatus = async (channelId) => {
         console.log(res.data)
         return res.data?.data;
     } catch (error) {
-        console.log(error)
+        throw error.response.data.message;
     }
 }
 

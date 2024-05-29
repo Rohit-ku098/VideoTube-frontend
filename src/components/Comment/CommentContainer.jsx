@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CommentSkeleton from "./CommentSkeleton";
 import CommentContainerSkeleton from "./CommentContainerSkeleton";
+import { toast } from "react-toastify";
 
 const CommentContainer = ({ video }) => {
   const [comments, setComments] = useState([]);
@@ -23,9 +24,9 @@ const CommentContainer = ({ video }) => {
     setLoading(true)
     getVideoComments(video?._id).then((comments) => {
       setComments(comments);
-      setLoading(false)
     }).catch((error) => {
-      console.log(error);
+      console.log(error)
+    }).finally(() => {
       setLoading(false);
     })
   }, [video?._id]);

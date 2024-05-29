@@ -5,7 +5,7 @@ const getAllVideos = async (params) => {
         console.log(response.data);
         return response.data?.data;
     } catch (error) {
-        throw error
+        throw error.response.data.message;
     }
 };
 
@@ -15,7 +15,7 @@ const getVideoById = async (videoId) => {
         console.log(response.data);
         return response.data?.data;
     } catch (error) {
-        throw error
+        throw error.response.data.message;
     }
 };
 
@@ -25,7 +25,7 @@ const deleteVideo = async (videoId) => {
         console.log(response.data);
         return response.data?.data;
     } catch (error) {
-        console.log(error);
+        throw error.response.data.message;
     }
 };
 
@@ -37,7 +37,7 @@ const togglePublishStatus = async (videoId, status) => {
     });
     return res.data?.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message;
   }
 };
 export { getAllVideos, getVideoById, deleteVideo, togglePublishStatus }

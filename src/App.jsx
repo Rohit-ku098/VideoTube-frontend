@@ -7,7 +7,7 @@ import { Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "./store/userSlice";
 import Loader from "./components/Loader";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -32,6 +32,9 @@ function App() {
       }
     } catch (error) {
       console.log(error);
+      toast.error(error, {
+        position: "bottom-left",
+      });
     }
     setLoading(false);
   }

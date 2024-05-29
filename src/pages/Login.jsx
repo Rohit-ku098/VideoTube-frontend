@@ -34,19 +34,15 @@ function Login() {
     try {
       const res = await api
         .post("/users/login", formData)
-      console.log(res.status)
        if(res?.status === 200) {
-        localStorage.setItem("user", JSON.stringify(res.data?.data?.user))
         dispatch(login(res.data?.data?.user))
         const user = useSelector(state => state.user.user)
-        console.log(user)
         navigate('/')
         reset()
        } 
     } catch (error) {
-      setError(useErrorMessage(error?.response?.data))    
+      setError(error.response.data?.message)    
     }
-    console.log(formData);
   };
 
   console.log('login render')

@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setChannelTweets } from "../../store/tweetSlice";
 import { getUserTweets } from "../../services/tweet.service";
+import { toast } from "react-toastify";
 
 function ChannelBlog() {
   const location = useLocation();
@@ -23,8 +24,10 @@ function ChannelBlog() {
         dispatch(setChannelTweets(res));
         setLoading(false);
       })
-      .catch((err) => {
-        console.error(err);
+      .catch((error) => {
+        toast.error(error, {
+          position: "bottom-left",
+        });
       });
   }, [userId]);
 

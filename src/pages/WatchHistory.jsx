@@ -26,12 +26,14 @@ function WatchHistory() {
     getUserWatchHistory()
       .then((history) => {
         setHistoryVideos(history);
-        setLoading(false);
       })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+      .catch((error) => {
+        toast.error(error, {
+          position: "bottom-left",
+        });
+      }).finally(() => {
+        setLoading(false)
+      })
   }, []);
 
   const handleRemoveVideoFromWatchHistory = async (videoId) => {
@@ -40,9 +42,11 @@ function WatchHistory() {
         historyVideos.filter((video) => video.video._id !== videoId)
       );
       await removeVideoFromWatchHistory(videoId);
-      console.log("video removed from watch history");
     } catch (error) {
       console.log(error);
+      toast.error(error, {
+        position: "bottom-left",
+      })
     }
   };
 
@@ -57,6 +61,9 @@ function WatchHistory() {
       });
     } catch (error) {
       console.log(error);
+      toast.error(error, {
+        position: "bottom-left",
+      });
     }
   };
 

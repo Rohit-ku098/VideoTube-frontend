@@ -5,7 +5,7 @@ const toggleVideoLike = async (videoId) => {
     const res = await api.post(`/likes/toggle/v/${videoId}`);
     return res.data?.data;
   } catch (error) {
-    console.log(error);
+    throw error.response.data.message;
   }
 };
 const toggleCommentLike = async (commentId) => {
@@ -13,7 +13,7 @@ const toggleCommentLike = async (commentId) => {
     const res = await api.post(`/likes/toggle/c/${commentId}`);
     return res.data?.data;
   } catch (error) {
-    console.log(error);
+    throw error.response.data.message;
   }
 };
 const toggleTweetLike = async (tweetId) => {
@@ -21,7 +21,7 @@ const toggleTweetLike = async (tweetId) => {
     const res = await api.post(`/likes/toggle/t/${tweetId}`);
     return res.data?.data;
   } catch (error) {
-    console.log(error);
+    throw error.response.data.message;
   }
 };
 

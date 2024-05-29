@@ -4,6 +4,7 @@ import { getAllVideos } from "../../services/video.service";
 import {  useLocation, useSearchParams } from "react-router-dom";
 import Loader from "../Loader";
 import VideoSkeleton from "./VideoSkeleton";
+import { toast } from "react-toastify";
 
 const ChannelVideos = () => {
     // const [searchParams, setSearchParams] = useSearchParams();
@@ -26,9 +27,14 @@ const ChannelVideos = () => {
             .then((data) => {
               setVideos((prev) => [...prev, ...data.videos]);
               setTotalVideosCount(data.count);
+            })
+            .catch((error) => {
+              toast.error(error, {
+                position: "bottom-left",
+              });
+            }).finally(() => {
               setLoading(false);
             })
-            .catch((err) => console.log(err));
         }
         
     }, [userId, page]);

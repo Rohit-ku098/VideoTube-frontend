@@ -21,6 +21,7 @@ import Searchbar from "./Searchbar";
 import Modal from "../Modal";
 import Loader from "../Loader";
 import Appearance from "../Appearance";
+import { toast } from "react-toastify";
 
 const Navbar = ({searchBar, menubar=true}) => {
   const dispatch = useDispatch();
@@ -42,11 +43,15 @@ const Navbar = ({searchBar, menubar=true}) => {
     const handleLogout = () => {
       setLoading(true);
       logoutUser().then(() => {
-        setLoading(false);
         navigate("/login");
         dispatch(logout());
-        setLoading(false)
-      });
+      }).catch((error) => {
+        toast.error(error, {
+          position: "bottom-left",
+        });
+      }).finally(() => {
+        setLoading(false);
+      })
     }
 
   const handleAppearanceOpen = () => {

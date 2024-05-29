@@ -5,7 +5,7 @@ const createTweet = async (data) => {
         const res = await api.post("/tweets", data)
         return res.data?.data        
     } catch (error) {
-        throw error
+        throw error.response.data.message;
     }
 }
 
@@ -14,7 +14,7 @@ const getUserTweets = async (userId) => {
         const res = await api.get(`/tweets/u/${userId}`)
         return res.data?.data        
     } catch (error) {
-        throw error
+        throw error.response.data.message;
     }
 }
 
@@ -24,7 +24,7 @@ const getAllTweets = async (params) => {
     const res = await api.get(`/tweets`, { params: params });
     return res.data?.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message;
   }
 };
 
@@ -33,7 +33,7 @@ const updateTweet = async (tweetId, data) => {
         const res = await api.patch(`/tweets/${tweetId}`, data)
         return res.data?.data        
     } catch (error) {
-        throw error
+        throw error.response.data.message;
     }
 }
 
@@ -42,7 +42,7 @@ const deleteTweet = async (tweetId) => {
         const res = await api.delete(`/tweets/${tweetId}`)
         return res.data?.data        
     } catch (error) {
-        throw error
+        throw error.response.data.message;
     }
 }
 

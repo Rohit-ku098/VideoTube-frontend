@@ -5,7 +5,7 @@ const getDashboardData = async () => {
         const res = await api.get("/dashboard/stats");
         return res.data?.data;
     } catch (error) {
-        throw error;
+        throw error.response.data.message;
     }
 };
 
@@ -14,7 +14,7 @@ const getDashboardVideos = async () => {
         const res = await api.get("/dashboard/videos");
         return res.data?.data;
     } catch (error) {
-        throw error;
+        throw error.response.data.message;
     }
 };
 

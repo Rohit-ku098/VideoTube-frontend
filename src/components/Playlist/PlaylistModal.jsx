@@ -21,28 +21,39 @@ function PlaylistModal({videoId, setShowModal}) {
         getUserPlaylist(user?._id)
         .then(res => {
             let playlists = res?.map((playlist) => playlist?.videos?.includes(videoId) ? { ...playlist, checked: true } : {...playlist, checked: false})
-            console.log(playlists)
             setPlaylists(playlists)
         })
-        .catch(err => {
-            console.log(err)
+        .catch(error => {
+            toast.error(error, {
+              position: "bottom-left",
+            });
         })
     }, [user])
 
     const handleAddVideoToPlaylist = async (playlist) => {
-        console.log('add video to playlist')
-        await addVideoToPlaylist(videoId, playlist?._id)
-        toast.success(`Video added to ${playlist.name}`, {
-          position: "bottom-left"
-        })
+        try {
+          await addVideoToPlaylist(videoId, playlist?._id)
+          toast.success(`Video added to ${playlist.name}`, {
+            position: "bottom-left"
+          })
+        } catch (error) {
+          toast.error(error, {
+            position: "bottom-left",
+          });
+        }
     }
 
     const handleRemoveVideoFromPlaylist  = async (playlist) => {
-        console.log('remove video from playlist')
-        await removeVideoFromPlaylist(videoId, playlist?._id)
-        toast.error(`Video removed from ${playlist.name}`, {
-          position: "bottom-left"
-        })
+        try {
+          await removeVideoFromPlaylist(videoId, playlist?._id)
+          toast.error(`Video removed from ${playlist.name}`, {
+            position: "bottom-left"
+          })
+        } catch (error) {
+          toast.error(error, {
+            position: "bottom-left",
+          });
+        }
     }
 
     console.log(playlists)
@@ -64,10 +75,15 @@ function PlaylistModal({videoId, setShowModal}) {
       }
 
     const handleCreatePlaylist = async (data) => {
-        console.log(data)
-        const playlist = await createPlaylist(data.name, data.description)
-        setPlaylists([...playlists, playlist])
-        setOpenInputBox(false)
+        try {
+          const playlist = await createPlaylist(data.name, data.description)
+          setPlaylists([...playlists, playlist])
+          setOpenInputBox(false)
+        } catch (error) {
+          toast.error(error, {
+            position: "bottom-left",
+          });
+        }
     }
 
     return (

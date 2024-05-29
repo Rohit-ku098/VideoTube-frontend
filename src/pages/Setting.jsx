@@ -13,6 +13,7 @@ import {
 import { toast } from "react-toastify";
 import { FadeLoader } from "react-spinners";
 import ChangePassword from "../components/Setting/ChangePassword";
+import useErrorMessage from "../hooks/useErrorMessage";
 
 function Setting() {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ function Setting() {
   const [fullNameUploading, setFullNameUploading] = useState(false);
   const [emailUploading, setEmailUploading] = useState(false);
 
-  const { handleSubmit, register, setValue } = useForm({
+  const { handleSubmit, register, setValue, formState: {errors}} = useForm({
     defaultValues: {
       fullName: user?.fullName,
       email: user?.email,
@@ -57,8 +58,7 @@ function Setting() {
         dispatch(login(user));
       })
       .catch((error) => {
-        console.log(error);
-        toast.error(error?.response?.data?.toString(), {
+        toast.error(error, {
           position: "bottom-left",
         });
       })
@@ -87,16 +87,16 @@ function Setting() {
     updateUserAvatar(formData)
       .then((user) => {
         dispatch(login(user));
+      })
+      .catch((error) => {
+        toast.error(error, {
+          position: "bottom-left",
+        });
+      }).finally(() => {
         setOpenUpdateAvatar(false);
         setAvatar(null);
         setAvatarUploading(false);
       })
-      .catch((error) => {
-        console.log(error);
-        toast.error(error?.response?.data?.toString(), {
-          position: "bottom-left",
-        });
-      });
   };
 
   const handleUpdateUserCoverImage = () => {
@@ -114,17 +114,44 @@ function Setting() {
     updateCoverImage(formData)
       .then((user) => {
         dispatch(login(user));
+        
+      })
+      .catch((error) => {
+        toast.error(error, {
+          position: "bottom-left",
+        });
+      }).finally(() => {
         setOpenUpdateCoverImage(false);
         setCoverImage(null);
         setCoverImageUploading(false);
       })
-      .catch((error) => {
-        console.log(error);
-        toast.error(error?.response?.data?.toString(), {
-          position: "bottom-left",
-        });
-      });
   };
+
+  const isValidImage = (image) => image?.name.match(/\.(jpg|jpeg|png)$/i);
+  
+  useEffect(() => {
+    if(avatar && !isValidImage(avatar)) {
+      toast.error("Only images are allowed", {
+        position: "bottom-left",
+      });
+      setAvatar(null);
+      setAvatarUploading(false);
+      setOpenUpdateAvatar(false)
+    }
+  }, [avatar])
+
+  useEffect(() => {
+    if(coverImage && !isValidImage(coverImage)) {
+      toast.error("Only images are allowed", {
+        position: "bottom-left",
+      });
+      setCoverImage(null);
+      setCoverImageUploading(false);
+      setOpenUpdateCoverImage(false)
+    }
+  }, [coverImage])
+
+
 
   return (
     <div className="h-full p-6">
@@ -185,9 +212,9 @@ function Setting() {
                       type="file"
                       name="avatar"
                       id="avatar"
-                      onInput={(e) => setAvatar(e.target.files[0])}
-                      onChange={(e) => {
+                      onInput={(e) => {
                         setOpenUpdateAvatar(true);
+                        setAvatar(e.target.files[0])
                       }}
                       className="hidden"
                     />
@@ -295,8 +322,10 @@ function Setting() {
                       type="file"
                       name="coverImage"
                       id="coverImage"
-                      onInput={(e) => setCoverImage(e.target.files[0])}
-                      onChange={(e) => setOpenUpdateCoverImage(true)}
+                      onInput={(e) => {
+                        setOpenUpdateCoverImage(true)
+                        setCoverImage(e.target.files[0])
+                      }}
                       className="hidden"
                     />
                   </label>

@@ -10,22 +10,29 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsUp as faThumbsOup } from "@fortawesome/free-regular-svg-icons";
+import { toast } from "react-toastify";
 
 function LikeBtn({ likeTo, ContentId, type="regular" }) {
   const [liked, setLiked] = React.useState(false);
   const [totalLike, setTotalLike] = React.useState(0);
 
   const handleToggleLike = async () => {
-        setTotalLike(prev => liked ? prev - 1 : prev + 1)
-        setLiked(prev => !prev)   
-        if(likeTo === "video") {
-            await toggleVideoLike(ContentId)
-        }
-        if (likeTo === "tweet") {
-          await toggleTweetLike(ContentId);
-        }
-        if(likeTo === "comment") {
-            await toggleCommentLike(ContentId)
+        try {
+          setTotalLike(prev => liked ? prev - 1 : prev + 1)
+          setLiked(prev => !prev)   
+          if(likeTo === "video") {
+              await toggleVideoLike(ContentId)
+          }
+          if (likeTo === "tweet") {
+            await toggleTweetLike(ContentId);
+          }
+          if(likeTo === "comment") {
+              await toggleCommentLike(ContentId)
+          }
+        } catch (error) {
+          toast.error(error, {
+            position: "bottom-left",
+          });
         }
   };
 
@@ -35,19 +42,31 @@ function LikeBtn({ likeTo, ContentId, type="regular" }) {
         setTotalLike(data.totalLike);
         setLiked(data.isLiked);
         // console.log(data.totalLike)
-      });
+      }).catch((error) => {
+        toast.error(error, {
+          position: "bottom-left",
+        });
+      })
     }
     if (likeTo === "tweet") {
       getTweetLikeInfo(ContentId).then((data) => {
         setTotalLike(data.totalLike);
         setLiked(data.isLiked);
-      });
+      }).catch((error) => {
+        toast.error(error, {
+          position: "bottom-left",
+        });
+      })
     }
     if(likeTo === "comment") {
         getCommentLikeInfo(ContentId).then((data) => {
           setTotalLike(data.totalLike);
           setLiked(data.isLiked);
-        });
+        }).catch((error) => {
+          toast.error(error, {
+            position: "bottom-left",
+          });
+        })
     }
   }, []);
 

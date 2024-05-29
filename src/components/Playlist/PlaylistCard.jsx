@@ -35,8 +35,13 @@ function PlaylistCard({ playlistId, wraped = false, threeDotsVisible = false }) 
     setLoading(true);
     getPlaylistById(playlistId).then((res) => {
       setPlaylist(res);
+    }).catch((error) => {
+      toast.error(error, {
+        position: "bottom-left",
+      });
+    }).finally(() => {
       setLoading(false);
-    });
+    })
   }, [playlistId]);
 
   useEffect(() => {
@@ -53,7 +58,6 @@ function PlaylistCard({ playlistId, wraped = false, threeDotsVisible = false }) 
 
   const handleDeletePlaylist = () => {
     deletePlaylist(playlistId).then(() => {
-      setIsDeleteConfirmationOpen(false);
       dispatch(
         setUserPlaylists(
           userPlaylists?.filter((playlist) => playlist._id !== playlistId)
@@ -62,14 +66,15 @@ function PlaylistCard({ playlistId, wraped = false, threeDotsVisible = false }) 
       
       toast.error("Playlist deleted successfully", {
         position: "bottom-left",
-      });
-
+      })
+      
       setIsDeleted(true);
     }).catch((error) => {
-      console.error(error);
-      toast.error(error?.message || "Something went wrong", {
+      toast.error(error, {
         position: "bottom-left",
       });
+    }).finally(() => {
+      setIsDeleteConfirmationOpen(false);
     })
   };
 

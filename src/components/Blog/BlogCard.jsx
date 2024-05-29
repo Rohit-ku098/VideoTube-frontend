@@ -69,8 +69,10 @@ const TweetCard = ({ tweet }) => {
           position: 'bottom-left',          
         });
       })
-      .catch((err) => {
-        console.error(err);
+      .catch((error) => {
+        toast.error(error, {
+          position: "bottom-left",
+        });
       });
   };
 
@@ -85,7 +87,9 @@ const TweetCard = ({ tweet }) => {
       setIsEditOpen(false)
     })
     .catch(error => {
-      console.log(error)
+      toast.error(error, {
+        position: 'bottom-left',
+      })
     })
   };
 
@@ -171,7 +175,6 @@ const TweetCard = ({ tweet }) => {
                     : [
                         {
                           title: "Report",
-                          path: `/reportTweet/${tweet?._id}`,
                           icon: faFlag,
                         },
                       ]

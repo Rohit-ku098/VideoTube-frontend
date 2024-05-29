@@ -13,6 +13,7 @@ import VideoCard from "../components/Video/VideoCard";
 import Loader from "../components/Loader";
 import { useSelector } from "react-redux";
 import PlaylistPageSkeleton from "../components/Playlist/PlaylistPageSkeleton";
+import { toast } from "react-toastify";
 
 function Playlist({ wraped }) {
   const { playlistId } = useParams();
@@ -28,11 +29,13 @@ function Playlist({ wraped }) {
       .then((res) => {
         setPlaylist(res);
         setLoading(false)
-      })
-      .catch((err) =>{
-        console.log(err)
+      }).catch((error) =>{
+        toast.error(error, {
+          position: "bottom-left",
+        });
+      }).finally(() => {
         setLoading(false)
-      });
+      })
   }, [playlistId]);
 
   useEffect(() => {
@@ -54,7 +57,13 @@ function Playlist({ wraped }) {
         videos: prev.videos.filter(video => video._id !== videoId)
       }
     })
-    removeVideoFromPlaylist(videoId, playlistId)
+    removeVideoFromPlaylist(videoId, playlistId).then((data) => {
+
+    }).catch((error) => {
+      toast.error(error, {
+        position: "bottom-left",
+      });
+    })
   }
   console.log(playlist)
   if(loading) return <PlaylistPageSkeleton/>

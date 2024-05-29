@@ -6,6 +6,7 @@ import { setVideos } from '../../store/videoSlice'
 import { useParams, useSearchParams } from 'react-router-dom'
 import Loader from '../Loader'
 import VideoSkeleton from './VideoSkeleton'
+import { toast } from 'react-toastify'
 function VideoContainer () {
   
   const [searchParams, setSearchParams] = useSearchParams();
@@ -26,8 +27,13 @@ function VideoContainer () {
       console.log(data)
        setVideos((prev) => [...prev, ...data.videos]);
        setTotalVideosCount(data?.count);
-       setLoading(false);
-     }).catch((err) => console.log(err));
+      }).catch((error) => {
+        toast.error(error, {
+          position: "bottom-left",
+        });
+      }).finally(() => {
+        setLoading(false);
+     })
 
    }, [searchParams, page]);
 

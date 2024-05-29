@@ -69,7 +69,7 @@ const UploadVideo = () => {
       });
       return response.data?.data;
     } catch (error) {
-      console.log(error);
+      throw error.response.data?.message
     }
   };
 
@@ -85,12 +85,17 @@ const UploadVideo = () => {
     setLoading(true)
 
     uploadVideo(formData).then((res) => {
-      setLoading(false)
       console.log(res)
       toast.success('Video uploaded successfully', {
         position: "bottom-left"
       })
       navigate('/')
+    }).catch((error) => {
+      toast.error(error, {
+        position: "bottom-left",
+      });
+    }).finally(() => {
+      setLoading(false)
     })
   };
 

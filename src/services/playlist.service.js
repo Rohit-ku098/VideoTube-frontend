@@ -9,7 +9,7 @@ const createPlaylist = async (name, description) => {
 
     return playlist.data?.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message;
   }
 };
 
@@ -18,7 +18,7 @@ const getPlaylistById = async (id) => {
     const res = await api.get(`/playlist/${id}`);
     return res.data?.data;
   } catch (error) {
-    console.log(error);
+    throw error.response.data.message;
   }
 };
 
@@ -27,7 +27,7 @@ const updatePlaylist = async (id, name, description) => {
     const res = await api.patch(`/playlist/${id}`, { name, description });
     return res.data?.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message;
   }
 };
 
@@ -36,7 +36,7 @@ const deletePlaylist = async (id) => {
     const res = await api.delete(`/playlist/${id}`);
     return res.data?.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message;
   }
 };
 
@@ -45,7 +45,7 @@ const getUserPlaylist = async (userid) => {
     const res = await api.get(`/playlist/user/${userid}`);
     return res.data?.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message;
   }
 };
 
@@ -54,7 +54,7 @@ const getChannelPlaylists = async (userName) => {
     const res = await api.get(`/playlist/channel/${userName}`);
     return res.data?.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message;
   }
 }
 
@@ -65,7 +65,7 @@ const addVideoToPlaylist = async (videoId, playlistId) => {
     );
     return res.data?.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message;
   }
 };
 
@@ -74,7 +74,7 @@ const removeVideoFromPlaylist = async (videoId, playlistId) => {
     const res = await api.patch(`/playlist/remove/${videoId}/${playlistId}`);
     return res.data?.data;
   } catch (error) {
-    throw error
+    throw error.response.data.message;
   }
 }
 export {

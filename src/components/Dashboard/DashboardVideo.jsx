@@ -29,15 +29,15 @@ function DashboardVideos() {
     getDashboardVideos()
       .then((data) => {
         setVideos(data);
-        setLoader(false);
       })
       .catch((error) => {
         console.error(error);
+        toast.error(error, {
+          position: "bottom-left",
+        });       
+      }).finally(() => {
         setLoader(false);
-        toast.error(error.message || "Something went wrong",{
-            position: "bottom-left",
-        } )        
-      });
+      })
   },[]);
 
   const handleDeleteVideo = (videoId) => {

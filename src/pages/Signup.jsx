@@ -6,7 +6,7 @@ import Input from "../components/Input";
 import { api } from "../services/conf";
 import Loader from "../components/Loader";
 import useErrorMessage from "../hooks/useErrorMessage";
-function Login() {
+function Signup() {
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const {
@@ -40,7 +40,7 @@ function Login() {
       }
     } catch (error) {
       console.log(error)
-      setError(useErrorMessage(error?.response?.data))
+      setError(error.response.data?.message)
     }
   }
 
@@ -186,4 +186,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;
