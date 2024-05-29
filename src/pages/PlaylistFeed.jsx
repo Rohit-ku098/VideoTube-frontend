@@ -18,18 +18,20 @@ function PlaylistFeed({createPlaylistOption = false}) {
 
 
   useEffect(() => {
-    setLoading(true)
-    getUserPlaylist(userId)
-    .then(res => {
-      dispatch(setUserPlaylists(res));
-      setLoading(false)
-    })
-    .catch(error => {
-      toast.error(error, {
-        position: "bottom-left",
-      });
-      setLoading(false)
-    })
+    if(userId) {
+      setLoading(true);
+      getUserPlaylist(userId)
+        .then((res) => {
+          dispatch(setUserPlaylists(res));
+          setLoading(false);
+        })
+        .catch((error) => {
+          toast.error(error, {
+            position: "bottom-left",
+          });
+          setLoading(false);
+        });
+    }
   }, [userId])
 
   useEffect(() => {
@@ -37,17 +39,20 @@ function PlaylistFeed({createPlaylistOption = false}) {
   }, [userPlaylists])
 
   useEffect(() => {
-    getChannelPlaylists(userName)
-    .then(res => {
-      setPlaylists(res);
-    })
-    .catch(error => {
-      toast.error(error, {
-        position: "bottom-left",
-      });
-    }).finally(() => {
-      setLoading(false)
-    })
+    if(userName) {
+      getChannelPlaylists(userName)
+        .then((res) => {
+          setPlaylists(res);
+        })
+        .catch((error) => {
+          toast.error(error, {
+            position: "bottom-left",
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   }, [userName])
 
   console.log('playlists feed rendered')

@@ -26,6 +26,7 @@ import LikeBtn from '../components/LikeBtn'
 import VideoSkeleton from '../components/Video/VideoSkeleton'
 import VideoPageSkeleton from '../components/Video/VideoPageSkeleton'
 import { toast } from 'react-toastify'
+import PlaylistModal from '../components/Playlist/PlaylistModal'
 
 function Video() {
      const { videoId } = useParams();
@@ -40,6 +41,7 @@ function Video() {
       const [liked, setLiked] = useState(false)
       const [totalLike, setTotalLike] = useState(0)
       const [loading, setLoading] = useState(false)
+      const [openPlaylistModal, setOpenPlaylistModal] = useState(false)
 
       const {user} = useSelector(state => state.user)
 
@@ -213,7 +215,9 @@ function Video() {
                 &nbsp;
                 <span className="ml-2 text-md">Share</span>
               </button>
-              <button className=" text-sm w-24 md:w-28  text-center px-4 py-1.5 cursor-pointer text-white bg-[#070707] hover:bg-[#353434]  dark:bg-gray-200 dark:hover:bg-gray-300 dark:text-black rounded-2xl">
+              <button 
+                onClick={() => setOpenPlaylistModal(true)}
+                className=" text-sm w-24 md:w-28  text-center px-4 py-1.5 cursor-pointer text-white bg-[#070707] hover:bg-[#353434]  dark:bg-gray-200 dark:hover:bg-gray-300 dark:text-black rounded-2xl">
                 {/*save icon*/}
                 <FontAwesomeIcon icon={faListUl} />
                 &nbsp;
@@ -222,6 +226,11 @@ function Video() {
             </div>
           </div>
         </div>
+        {
+          openPlaylistModal && (
+            <PlaylistModal setShowModal={setOpenPlaylistModal} videoId={videoId}/>
+          )
+        }
         <div className="mx-2 p-4 bg-white dark:bg-bgDarkSecondary rounded-lg  mb-4">
           {/*description*/}
           <div className="flex gap-5 items-center font-semibold">
