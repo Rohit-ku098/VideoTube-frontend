@@ -7,6 +7,8 @@ import Loader from "../Loader";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../services/conf";
+import Progressbar from "../Progressbar";
+import { BarLoader } from "react-spinners";
 
 const UploadVideo = () => {
   const { register, handleSubmit, setError, clearErrors, formState: {errors, isSubmitting, isDirty} } = useForm({defaultValues: {
@@ -18,8 +20,9 @@ const UploadVideo = () => {
   }});
   const [videoFile, setVideoFile] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
-  const [loading, setLoading] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
+  const [processing, setProcessing] = useState(false)
   const navigate = useNavigate();
 
   const handleVideoDrop = (event) => {
@@ -73,6 +76,12 @@ const UploadVideo = () => {
     }
   };
 
+  useEffect(() => {
+    if (uploadProgress === 100) {
+      setProcessing(true);
+    }
+  }, [uploadProgress, uploading]);
+
   const onSubmit = (data) => {
     console.log(data)
     console.log('submitting')
@@ -82,20 +91,22 @@ const UploadVideo = () => {
     formData.append("thumbnail", thumbnail);
     formData.append("videoFile", videoFile);
     formData.append("isPublished", data.isPublished)
-    setLoading(true)
+    setUploading(true)
 
     uploadVideo(formData).then((res) => {
       console.log(res)
       toast.success('Video uploaded successfully', {
         position: "bottom-left"
       })
-      navigate('/')
+      navigate('/dashboard')
     }).catch((error) => {
       toast.error(error, {
         position: "bottom-left",
       });
     }).finally(() => {
-      setLoading(false)
+      setUploading(false)
+      setUploadProgress(0)
+      setProcessing(false)
     })
   };
 
@@ -103,7 +114,7 @@ const UploadVideo = () => {
   const isEmpty = value => value.trim().length > 0 || "This field is required";
   return (
     <div className="pt-6 p-4">
-      {loading && <Loader />}
+      {/* {uploading && <Loader />} */}
 
       <div className="  p-4   border-2 dark:border-gray-800 rounded-xl bg-white dark:bg-[#20232f93] shadow-lg ">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -114,6 +125,7 @@ const UploadVideo = () => {
                   label="Title"
                   type="text"
                   placeholder="Title"
+                  disabled={uploading}
                   {...register("title", {
                     required: {
                       value: true,
@@ -137,6 +149,7 @@ const UploadVideo = () => {
                   id="description"
                   name="description"
                   // rows="3"
+                  disabled={uploading}
                   className="form-textarea w-full p-2 border border-gray-300 bg-transparent rounded-lg min-h-52 md:h-80 lg:h-96 outline-none "
                   {...register("description")}
                 ></textarea>
@@ -163,6 +176,7 @@ const UploadVideo = () => {
                     type="file"
                     id="videoFile"
                     name="videoFile"
+                    disabled={uploading}
                     onInput={(e) => setVideoFile(e.target.files[0])}
                     className="hidden w-full h-full"
                     {...register("videoFile", {
@@ -228,6 +242,7 @@ const UploadVideo = () => {
                     type="file"
                     id="thumbnail"
                     name="thumbnail"
+                    disabled={uploading}
                     onInput={(e) => setThumbnail(e.target.files[0])}
                     className="hidden w-full h-full"
                     {...register("thumbnail", {
@@ -295,12 +310,33 @@ const UploadVideo = () => {
                 </label>
               </div>
               <div className="mt-6">
-                <button
-                  type="submit"
-                  className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white dark:text-black bg-black dark:bg-white/95 focus:outline-none focus:ring-2 focus:ring-offset-2 "
-                >
-                  {isSubmitting ? "Uploading..." : "Upload Video"}
-                </button>
+                {uploading ? (
+                  processing ? (
+                    <div>
+                      <div className="absolute top-0 right-0 z-50 h-screen w-screen"></div>
+                      <p className="text-gray-500 text-sm">Processing...</p>
+                      <BarLoader
+                        width={"100%"}
+                        height={10}
+                        color={"#4f46e5"}
+                        className="rounded-full"
+                      />
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="absolute top-0 right-0 z-50 h-screen w-screen"></div>
+                      <p className="text-gray-500 text-sm">Uploading...</p>
+                      <Progressbar progress={uploadProgress} />
+                    </div>
+                  )
+                ) : (
+                  <button
+                    type="submit"
+                    className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white dark:text-black bg-black dark:bg-white/95 focus:outline-none focus:ring-2 focus:ring-offset-2 "
+                  >
+                    Upload video
+                  </button>
+                )}
               </div>
             </div>
           </div>

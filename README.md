@@ -12,6 +12,8 @@ Currently, two official plugins are available:
 - Video Player
 - Blog
 - Playlist
+- Dashboard
+- Settings
 - Subscription
 - File Uploading
 - Lazy Loading
@@ -19,7 +21,8 @@ Currently, two official plugins are available:
 - History Tracking
 - Fully Responsive
 - Infnite Scrolling
-- TODO: Progress Bar
-
+- Progress Bar
+- Search
+- Theme
 ## Authentication & Authorization 
 - 
