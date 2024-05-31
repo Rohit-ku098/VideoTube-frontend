@@ -97,14 +97,14 @@ function Login() {
                   },
                 })}
               />
-              <Link
+              {/* <Link
                 to={"#"}
                 title="forget password"
                 className="block text-sm text-right text-black dark:text-white hover:underline"
               >
                 {" "}
                 Forgot password?{" "}
-              </Link>
+              </Link> */}
               {errors.password && (
                 <div className="text-red-500">{errors.password.message}</div>
               )}

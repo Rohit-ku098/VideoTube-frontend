@@ -29,6 +29,7 @@ const UploadVideo = () => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     setVideoFile(file);
+    console.log(file)
     clearErrors("videoError");
   };
 
@@ -47,6 +48,21 @@ const UploadVideo = () => {
   useEffect(() => {
     const isVideo = videoFile?.name.match(/\.(mp4|avi|mov|wmv|mkv|flv|webm)$/i);
     if (videoFile && !isVideo) setError("videoError", { type: "custom", message: "Only video files are allowed" });
+    
+    if (videoFile && 
+        import.meta.env.VITE_LIMIT_VIDEO_UPLOAD_SIZE === 'true' &&
+        videoFile?.size > import.meta.env.VITE_LIMIT_VIDEO_UPLOAD_SIZE_VALUE
+      ) {
+        setVideoFile(null);
+        setError("videoError", {
+          type: "custom",
+          message: "File size should be less than " + Math.floor(Number.parseInt(import.meta.env.VITE_LIMIT_VIDEO_UPLOAD_SIZE_VALUE) / 1048576) + "MB",
+        });
+        toast.error("Sorry for inconvenience. Due to limited bandwidth of our server. I have limited the video upload size to " + Math.floor(Number.parseInt(import.meta.env.VITE_LIMIT_VIDEO_UPLOAD_SIZE_VALUE) / 1048576) + "MB", {
+          position: "bottom-left",
+          autoClose: 6000,
+        })
+    }
   }, [videoFile])
 
   useEffect(() => {
@@ -85,6 +101,35 @@ const UploadVideo = () => {
   const onSubmit = (data) => {
     console.log(data)
     console.log('submitting')
+    if(!data.title) {
+      setError('title', {type: 'custom', message: 'Title is required'})
+      return;
+    }
+    
+    if(!videoFile) {
+      setError('videoFile', {type: 'custom', message: 'Video is required'})
+      return;
+    }
+
+    const isVideo = videoFile?.name.match(/\.(mp4|avi|mov|wmv|mkv|flv|webm)$/i);
+    if (videoFile && !isVideo)
+      setError("videoError", {
+        type: "custom",
+        message: "Only video files are allowed",
+    });
+    
+    
+    if(!thumbnail) {
+      setError('thumbnail', {type: 'custom', message: 'Thumbnail is required'})
+      return;
+    }
+    const isThumbnailValid = thumbnail?.name?.match(/\.(jpg|jpeg|png)$/i);
+    if (thumbnail && !isThumbnailValid)
+      setError("thumbnailError", {
+        type: "custom",
+        message: "Only .jpg .jpeg .png files are allowed",
+      });
+
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);

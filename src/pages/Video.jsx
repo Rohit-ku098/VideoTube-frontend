@@ -42,6 +42,7 @@ function Video() {
       const [totalLike, setTotalLike] = useState(0)
       const [loading, setLoading] = useState(false)
       const [openPlaylistModal, setOpenPlaylistModal] = useState(false)
+      const [isPrivate, setIsPrivate] = useState(false)
 
       const {user} = useSelector(state => state.user)
 
@@ -95,6 +96,7 @@ function Video() {
       setLoading(true)
       getVideoById(videoId).then((data) => {
         setVideo(data);
+        console.log(data)
         setDate(getAge(data?.createdAt) + " ago");
         setViews(formatViews(data?.views));
         setTotalSubscribers(data?.owner?.subscribers)
@@ -112,12 +114,13 @@ function Video() {
         }
       })
       .catch(error => {
-        console.error(err)
+        console.error(error)
         setLoading(false);
+        if (error === "Video is not published") setIsPrivate(true);
         toast.error(error, {
           position: "bottom-left",
         });
-      });
+      })
 
        getAllVideos({}).then((data) => {
          setSuggestedVideo(data.videos);
@@ -160,6 +163,12 @@ function Video() {
   if(loading) return (
     <VideoPageSkeleton />
   ) 
+
+  if(isPrivate) return (
+    <div className='w-full h-[80vh] flex justify-center items-center'>
+      <p>This video is private</p>
+    </div>
+  )
 
   return (
     <div className="flex flex-col lg:flex-row lg:p-2 w-full">
