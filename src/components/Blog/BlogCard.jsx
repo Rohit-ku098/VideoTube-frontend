@@ -54,7 +54,7 @@ const TweetCard = ({ tweet }) => {
   useEffect(() => {
     setAge(getAge(tweet?.createdAt));
     setIsEdited(tweet?.updatedAt !== tweet?.createdAt);
-  }, []);
+  }, [tweet.updatedAt]);
 
   const handleDeleteConfirmationPopup = () => {
     setIsDeleteOpen(!isDeleteOpen);
