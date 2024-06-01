@@ -37,6 +37,11 @@ function VideoContainer () {
 
    }, [searchParams, page]);
 
+   useEffect(() => {
+    setVideos([]);
+    setPage(1);
+   }, [searchParams.get("query")])
+
    const handleInfiniteScroll =  () => {
     if(window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {
       if(TotalVideosCount > videos.length) {
