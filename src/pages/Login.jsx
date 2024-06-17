@@ -9,6 +9,7 @@ import { login } from '../store/userSlice'
 import Loader from "../components/Loader";
 import Logo from "../components/Logo";
 import Input from "../components/Input";
+import {toast} from "react-toastify"
 function Login() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -41,10 +42,30 @@ function Login() {
         reset()
        } 
     } catch (error) {
-      setError(error.response.data?.message)    
+      setError(error.response?.data?.message)
+      toast.error(error, {
+        position: "bottom-left",
+      })
+    
     }
   };
 
+  useEffect(() => {
+    if(import.meta.env.VITE_TEST_MODE === 'true') {
+        toast.info(
+        <p>
+          For testing purposes you can use <br/> username: {import.meta.env.VITE_TEST_USERNAME} <br /> password: {import.meta.env.VITE_TEST_PASSWORD}
+        </p>,
+        {
+          position: "top-center",
+          autoClose: 10000,
+          hideProgressBar: false,
+          pauseOnHover: true,
+          draggable: true,
+        }
+      );
+    }
+  }, [])
   console.log('login render')
   return (
     <section>
